@@ -66,8 +66,8 @@
       <file leaf-file-name="Ray.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/se/liu/Ray.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="22" lean-forward="false" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
+            <state relative-caret-position="221">
+              <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -109,8 +109,8 @@
         <option value="$PROJECT_DIR$/src/se/liu/Vector.java" />
         <option value="$PROJECT_DIR$/src/se/liu/Vertex.java" />
         <option value="$PROJECT_DIR$/src/se/liu/ColorDbl.java" />
-        <option value="$PROJECT_DIR$/src/se/liu/Ray.java" />
         <option value="$PROJECT_DIR$/src/se/liu/Triangle.java" />
+        <option value="$PROJECT_DIR$/src/se/liu/Ray.java" />
       </list>
     </option>
   </component>
@@ -374,14 +374,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/se/liu/Ray.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="22" lean-forward="false" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/se/liu/Vertex.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -407,6 +399,14 @@
           <folding>
             <element signature="e#95#96#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/se/liu/Ray.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
