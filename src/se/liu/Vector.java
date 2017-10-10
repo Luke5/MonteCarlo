@@ -28,7 +28,6 @@ public class Vector {
     }
 
     public Vector(double x, double y, double z) {
-
         this.x = x;
         this.y = y;
         this.z = z;
@@ -41,7 +40,16 @@ public class Vector {
         return sum;
     }
 
-    public Vector scalarProduct(double r){
+    public Vector invert(){
+        Vector i = new Vector(-this.x,-this.y,-this.y);
+        return i;
+    }
+
+    public Vector sub(Vector subVec){
+        return this.add(subVec.invert());
+    }
+
+    public Vector scalarMult(double r){
         Vector product = new Vector(this.x*r,this.y*r,this.z*r);
         return product;
     }
