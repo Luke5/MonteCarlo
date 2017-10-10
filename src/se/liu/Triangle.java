@@ -30,4 +30,8 @@ public class Triangle {
     public void setNormal(Vertex normal) {
         this.normal = normal;
     }
+
+    public void rayIntersection(Ray arg){
+
+    }
 }

@@ -1,18 +1,18 @@
 package se.liu;
 
 public class Vertex {
-    public Vertex(float x, float y, float z, float w) {
+    public Vertex(double x, double y, double z, double w) {
         vec= new Vector(x,y,z);
         this.w = w;
     }
     public Vector vec;
-    private float w;
+    private double w;
 
-    public float getW() {
+    public double getW() {
         return w;
     }
 
-    public void setW(float w) {
+    public void setW(double w) {
         this.w = w;
     }
 }
