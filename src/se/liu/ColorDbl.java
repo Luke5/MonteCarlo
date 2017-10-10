@@ -1,9 +1,7 @@
 package se.liu;
 
 public class ColorDbl {
-    private double r;
-    private double g;
-    private double b;
+    private double r, g, b;
 
     public double getR() {
         return r;

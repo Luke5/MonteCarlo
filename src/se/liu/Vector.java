@@ -33,7 +33,5 @@ public class Vector {
         this.z = z;
     }
 
-    private float x;
-    private float y;
-    private float z;
+    private float x, y, z;
 }
