@@ -4,17 +4,26 @@ public class Triangle {
 
     //vertex 3,  color, direction of normal (all private)
     private ColorDbl color;
-    private Vertex normal;
+    private Direction normal;
     private Vertex[] vertices = new Vertex[3];
 
-    public Triangle(ColorDbl color, Vertex normal, Vertex v1, Vertex v2, Vertex v3) {
+    public Triangle(ColorDbl color, Vertex v1, Vertex v2, Vertex v3) {
         this.color = color;
-        this.normal = normal;
         this.vertices[0]=v1;
         this.vertices[1]=v2;
         this.vertices[2]=v3;
     }
 
+    public Triangle(ColorDbl color, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3){
+        this.color = color;
+        Vertex v1 = new Vertex(x1,y1,z1);
+        Vertex v2 = new Vertex(x2,y2,z2);
+        Vertex v3 = new Vertex(x3,y3,z3);
+        this.vertices[0]=v1;
+        this.vertices[1]=v2;
+        this.vertices[2]=v3;
+
+    }
     public ColorDbl getColor() {
         return color;
     }
@@ -23,11 +32,11 @@ public class Triangle {
         this.color = color;
     }
 
-    public Vertex getNormal() {
+    public Direction getNormal() {
         return normal;
     }
 
-    public void setNormal(Vertex normal) {
+    public void setNormal(Direction normal) {
         this.normal = normal;
     }
 
