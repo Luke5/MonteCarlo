@@ -66,20 +66,21 @@ component, formatting, style, styling, insert
 \end{IEEEkeywords}
 
 \section{Introduction}
-This document is a model and instructions for \LaTeX.
-Please observe the conference page limits. 
+Raytracing is a useful tool in computer graphics. By calculating and simulating how rays of light interfere and interact gives a realistic result.
+Transparent object such as glass or a water surface can't be shown with a texture since they have no color. By using raytracing these objects can be created with a realistic result.
 
+Raytracing calculations can take a long time to calculate and thus they're only suitable for creating single images and not for contunously rendered video games. 
+This report covers the implementation and result of a Monte Carlo ray tracer.
+This report discusses methods presented in the report Global Illumination using Photon Maps by Henrik Wann Jensen
 \section{Ease of Use}
 
-\subsection{Maintaining the Integrity of the Specifications}
+\subsection{Background}
 
-The IEEEtran class file is used to format your paper and style the text. All margins, 
-column widths, line spaces, and text fonts are prescribed; please do not 
-alter them. You may note peculiarities. For example, the head margin
-measures proportionately more than is customary. This measurement 
-and others are deliberate, using specifications that anticipate your paper 
-as one part of the entire proceedings, and not as an independent document. 
-Please do not revise any of the current designations.
+(reference from: "http://www.cs.cornell.edu/courses/cs4620/2013fa/lectures/22mcrt.pdf")
+Basic ray tracing methods use one ray per pixel, one shadow ray fror every point of light and one reflection ray, in some cases a refraction ray is added, for all interfering surfaces.
+
+(reference from: "https://en.wikipedia.org/wiki/Monte_Carlo_method")
+The Monte Carlo method uses randomization to obtain a numerical result. 
 
 \section{Prepare Your Paper Before Styling}
 Before you begin to format your paper, first write and save the content as a 
@@ -87,7 +88,8 @@ separate text file. Complete all content and organizational editing before
 formatting. Please note sections \ref{AA}--\ref{SCM} below for more information on 
 proofreading, spelling and grammar.
 
-Keep your text and graphic files separate until after the text has been 
+Keep your text and graphic files separate until after 
+the text has been 
 formatted and styled. Do not number text heads---{\LaTeX} will do that 
 for you.
 
