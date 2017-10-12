@@ -1,5 +1,4 @@
 package se.liu;
-import  java.lang.Math.*;
 
 public class Vector {
     public void setX(double x) {
