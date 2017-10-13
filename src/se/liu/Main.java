@@ -15,13 +15,13 @@ public class Main {
 
         Scene scene = new Scene();
         // Floor
-        scene.addTriangle(new ColorDbl("white"),-3,0,-5,0,6,-5,0,-6,-5);
-        scene.addRectangle(new ColorDbl("orange"),10,6,-5,0,6,-5,0,-6,-5,10,-6,-5);
+        scene.addTriangle(new ColorDbl("orange"),-3,0,-5,0,6,-5,0,-6,-5);
+        scene.addRectangle(new ColorDbl("white"),10,6,-5,0,6,-5,0,-6,-5,10,-6,-5);
         scene.addTriangle(new ColorDbl("lemon"),10,6,-5,10,-6,-5,13,0,-5);
         // Ceiling
-        scene.addTriangle(new ColorDbl("black"),-3,0,5,0,6,5,0,-6,5);
-        scene.addRectangle(new ColorDbl("purple"),10,6,5,0,6,5,0,-6,5,10,-6,5);
-        scene.addTriangle(new ColorDbl("grey"),10,6,5,10,-6,5,13,0,5);
+        scene.addTriangle(new ColorDbl("purple"),-3,0,5,0,6,5,0,-6,5);
+        scene.addRectangle(new ColorDbl("black"),10,6,5,0,6,5,0,-6,5,10,-6,5);
+        scene.addTriangle(new ColorDbl("sky"),10,6,5,10,-6,5,13,0,5);
         // Walls
         scene.addRectangle(new ColorDbl("red"),-3,0,5,0,6,5,0,6,-5,-3,0,-5);
         scene.addRectangle(new ColorDbl("yellow"),-3,0,5,0,-6,5,0,-6,-5,-3,0,-5);
@@ -45,9 +45,10 @@ public class Main {
         }
         // Initialize the Camera
         Camera camera = new Camera(eyePoints,pixelPlane,resX,resY);
-        camera.setCurrentEyePoint(1);
-
+        camera.setCurrentEyePoint(0);
+        // Render the Scene
         camera.render(scene);
+        // Writing all Pixels into a BufferedImage and writing into jpg-file
         BufferedImage image = camera.createImage();
         File outputfile = new File("image.jpg");
         ImageIO.write(image, "jpg", outputfile);

@@ -25,6 +25,7 @@ public class Pixel {
 
     public void calculateColor() {
         int r=0,g=0,b=0,i=0;
+        System.out.println("RayArray :"+rays.get(0));
         for (Ray ray:rays) {
             r+=ray.getColor().getR();
             g+=ray.getColor().getG();

@@ -10,9 +10,9 @@ public class Ray {
     private ColorDbl color;
 
     public Ray(Vertex start, Vertex end) {
-
         this.start = start;
         this.end = end;
+        this.color=new ColorDbl("default");
     }
 
     public double[] getFirstIntersectionTriangle() {

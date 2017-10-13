@@ -40,7 +40,7 @@ public class Vector {
     }
 
     public Vector invert(){
-        Vector i = new Vector(-this.x,-this.y,-this.y);
+        Vector i = new Vector(-this.x,-this.y,-this.z);
         return i;
     }
 

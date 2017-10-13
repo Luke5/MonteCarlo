@@ -107,6 +107,11 @@ public class ColorDbl {
                 this.g = 0;
                 this.b = 255;
                 break;
+            case "sky":
+                this.r = 0;
+                this.g = 128;
+                this.b = 255;
+                break;
             default:
                 this.r = 128;
                 this.g = 128;
