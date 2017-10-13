@@ -4,7 +4,7 @@ public class Triangle {
 
     //vertex 3,  color, direction of normal (all private)
     private ColorDbl color;
-    private Direction normal;
+    private Vector normal;
     private Vertex[] vertices = new Vertex[3];
 
     public Triangle(ColorDbl color, Vertex v1, Vertex v2, Vertex v3) {
@@ -12,6 +12,7 @@ public class Triangle {
         this.vertices[0]=v1;
         this.vertices[1]=v2;
         this.vertices[2]=v3;
+        this.calculateNormal();
     }
 
     public Triangle(ColorDbl color, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3){
@@ -22,6 +23,7 @@ public class Triangle {
         this.vertices[0]=v1;
         this.vertices[1]=v2;
         this.vertices[2]=v3;
+        this.calculateNormal();
 
     }
     public ColorDbl getColor() {
@@ -32,13 +34,11 @@ public class Triangle {
         this.color = color;
     }
 
-    public Direction getNormal() {
+    public Vector getNormal() {
         return normal;
     }
 
-    public void setNormal(Direction normal) {
-        this.normal = normal;
-    }
+    public void calculateNormal() { this.normal = this.vertices[0].sub(this.vertices[1]).crossProduct(this.vertices[0].sub(this.vertices[2])); }
 
     public double rayIntersection(Ray arg){
         Vector T, E1, E2, D, P, Q;

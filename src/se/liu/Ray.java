@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Ray {
     private Vertex start, end;
-    private double[] firstIntersectionTriangle;
+    private double[] firstIntersectionTriangle= new double[2];
     private ArrayList<double[]> intersectionTriangles = new ArrayList<double[]>();
     private ColorDbl color;
 

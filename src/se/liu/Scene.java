@@ -40,6 +40,7 @@ public class Scene {
                 if(min==-1 || min>t){
                     min = t;
                     arg.setFirstIntersectionTriangle(i,t);
+                    arg.setColor(triangle.getColor());
                 }
             }
             i++;
