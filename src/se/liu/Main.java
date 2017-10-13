@@ -11,17 +11,17 @@ public class Main {
     public static void main(String[] args) throws IOException {
         // Define resolution of final image
         int resX=1000;
-        int resY=700;
+        int resY=1000;
 
         Scene scene = new Scene();
         // Floor
         scene.addTriangle(new ColorDbl("white"),-3,0,-5,0,6,-5,0,-6,-5);
-        scene.addRectangle(new ColorDbl("white"),10,6,-5,0,6,-5,0,-6,-5,10,-6,-5);
-        scene.addTriangle(new ColorDbl("white"),10,6,-5,10,-6,-5,13,0,-5);
+        scene.addRectangle(new ColorDbl("orange"),10,6,-5,0,6,-5,0,-6,-5,10,-6,-5);
+        scene.addTriangle(new ColorDbl("lemon"),10,6,-5,10,-6,-5,13,0,-5);
         // Ceiling
-        scene.addTriangle(new ColorDbl("white"),-3,0,5,0,6,5,0,-6,5);
-        scene.addRectangle(new ColorDbl("white"),10,6,5,0,6,5,0,-6,5,10,-6,5);
-        scene.addTriangle(new ColorDbl("white"),10,6,5,10,-6,5,13,0,5);
+        scene.addTriangle(new ColorDbl("black"),-3,0,5,0,6,5,0,-6,5);
+        scene.addRectangle(new ColorDbl("purple"),10,6,5,0,6,5,0,-6,5,10,-6,5);
+        scene.addTriangle(new ColorDbl("grey"),10,6,5,10,-6,5,13,0,5);
         // Walls
         scene.addRectangle(new ColorDbl("red"),-3,0,5,0,6,5,0,6,-5,-3,0,-5);
         scene.addRectangle(new ColorDbl("yellow"),-3,0,5,0,-6,5,0,-6,-5,-3,0,-5);
@@ -35,13 +35,17 @@ public class Main {
         eyePoints[1]=new Vertex(-1,0,0);
         // Initialize the Camera Plane
         Pixel[][] pixelPlane= new Pixel[resY][resX];
+        double xPos=0;
         for(int y=0; y<resY; y++){
+            double zPos=-(((y/(((double) resY)/2.0))-1.0)*(((double) resY)/((double) resX)));
             for(int x=0; x<resX; x++){
-                pixelPlane[y][x]=new Pixel(new Vertex(0,(x/(resX/2))-1,((y/(resY/2))-1)*(resY/resY)));
+                double yPos=-((x/(((double) resX)/2.0))-1.0);
+                pixelPlane[y][x]=new Pixel(new Vertex(xPos,yPos,zPos));
             }
         }
         // Initialize the Camera
         Camera camera = new Camera(eyePoints,pixelPlane,resX,resY);
+        camera.setCurrentEyePoint(0);
 
         camera.render(scene);
         BufferedImage image = camera.createImage();
