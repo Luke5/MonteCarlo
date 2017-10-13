@@ -45,7 +45,7 @@ public class Main {
         }
         // Initialize the Camera
         Camera camera = new Camera(eyePoints,pixelPlane,resX,resY);
-        camera.setCurrentEyePoint(0);
+        camera.setCurrentEyePoint(1);
 
         camera.render(scene);
         BufferedImage image = camera.createImage();
