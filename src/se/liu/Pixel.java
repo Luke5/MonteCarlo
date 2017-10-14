@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public class Pixel {
     private ColorDbl color;
-    private ArrayList<Ray> rays= new ArrayList<Ray>();
+    private ArrayList<Ray> rays = new ArrayList<>();
     private Vertex position;
 
-    public Pixel(Vertex position) {
+    Pixel(Vertex position) {
         this.position = position;
     }
 
@@ -15,31 +15,31 @@ public class Pixel {
         return rays.get(i);
     }
 
-    public void addRay(Ray ray){
+    void addRay(Ray ray) {
         rays.add(ray);
     }
 
-    public ColorDbl getColor() {
+    ColorDbl getColor() {
         return color;
     }
 
-    public void calculateColor() {
-        int r=0,g=0,b=0,i=0;
-        for (Ray ray:rays) {
-            r+=ray.getColor().getR();
-            g+=ray.getColor().getG();
-            b+=ray.getColor().getB();
+    void calculateColor() {
+        int r = 0, g = 0, b = 0, i = 0;
+        for (Ray ray : rays) {
+            r += ray.getColor().getR();
+            g += ray.getColor().getG();
+            b += ray.getColor().getB();
             i++;
         }
-        if(i!=0){
-            r/=i;
-            g/=i;
-            b/=i;
+        if (i != 0) {
+            r /= i;
+            g /= i;
+            b /= i;
         }
-        this.color = new ColorDbl(r,g,b);
+        this.color = new ColorDbl(r, g, b);
     }
 
-    public Vertex getPosition() {
+    Vertex getPosition() {
         return position;
     }
 }
