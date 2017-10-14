@@ -25,7 +25,6 @@ public class Triangle {
         this.vertices[1]=v2;
         this.vertices[2]=v3;
         this.calculateNormal();
-        System.out.println("Created new Triangle at P1( "+v1.getX()+" ; "+v1.getY()+" ; "+v1.getZ()+" ) P2( "+v2.getX()+" ; "+v2.getY()+" ; "+v2.getZ()+" ) P3( "+v3.getX()+" ; "+v3.getY()+" ; "+v3.getZ()+" )");
     }
     public ColorDbl getColor() {
         return color;

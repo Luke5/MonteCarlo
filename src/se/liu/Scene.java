@@ -7,8 +7,11 @@ public class Scene {
 
     public Scene(ArrayList<Triangle> triangles) {
         this.triangles = triangles;
+        System.out.println("Created new Scene with "+triangles.size()+" Objects");
     }
-    public Scene(){};
+    public Scene(){
+        System.out.println("Created new empty Scene");
+    };
 
     public void addTriangle(Triangle triangle){
         triangles.add(triangle);
@@ -17,6 +20,7 @@ public class Scene {
     public void addTriangle(ColorDbl color, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3){
         Triangle triangle = new Triangle(color,x1,y1,z1,x2,y2,z2,x3,y3,z3);
         triangles.add(triangle);
+        System.out.println("Added new Triangle at P1( "+x1+" ; "+y1+" ; "+z1+" ) P2( "+x2+" ; "+y2+" ; "+z2+" ) P3( "+x3+" ; "+y3+" ; "+z3+" )");
     }
 
     public void addRectangle(ColorDbl color, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3, double x4, double y4, double z4){
@@ -24,6 +28,7 @@ public class Scene {
         Triangle t2 = new Triangle(color,x1,y1,z1,x3,y3,z3,x4,y4,z4);
         triangles.add(t1);
         triangles.add(t2);
+        System.out.println("Added new Rectangle at P1( "+x1+" ; "+y1+" ; "+z1+" ) P2( "+x2+" ; "+y2+" ; "+z2+" ) P3( "+x3+" ; "+y3+" ; "+z3+" ) P4( "+x4+" ; "+y4+" ; "+z4+" )");
     }
 
     public Triangle getTriangle(int i){
@@ -35,7 +40,7 @@ public class Scene {
         int i=0;
         for(Triangle triangle:triangles){
             double t = triangle.rayIntersection(arg);
-            if(t!=-1){
+            if(t>=0){
                 arg.addIntersectionTriangle(i, t);
                 if(min==-1 || min>t){
                     min = t;

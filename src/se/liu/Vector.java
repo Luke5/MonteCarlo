@@ -2,21 +2,18 @@ package se.liu;
 
 public class Vector {
     public void setX(double x) {
-        this.x = x;
+        this.x = x/1.0;
     }
 
     public void setY(double y) {
-        this.y = y;
+        this.y = y/1.0;
     }
 
     public void setZ(double z) {
-        this.z = z;
+        this.z = z/1.0;
     }
 
-    public double getX() {
-
-        return x;
-    }
+    public double getX() { return x; }
 
     public double getY() {
         return y;
@@ -27,9 +24,9 @@ public class Vector {
     }
 
     public Vector(double x, double y, double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.x = x/1.0;
+        this.y = y/1.0;
+        this.z = z/1.0;
     }
 
     private double x, y, z;
@@ -54,7 +51,7 @@ public class Vector {
     }
 
     public double dotProduct( Vector vec){
-        return (this.x*vec.getX()+this.y+vec.getY()+this.z*vec.getZ());
+        return (this.x*vec.getX()+this.y*vec.getY()+this.z*vec.getZ());
     }
 
     public Vector crossProduct(Vector vec){

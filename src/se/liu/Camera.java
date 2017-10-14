@@ -13,6 +13,7 @@ public class Camera {
         this.eyePoints = eyePoints;
         this.pixelPlane = pixelPlane;
         image= new BufferedImage(resX,resY,BufferedImage.TYPE_INT_RGB);
+        System.out.println("Created new Camera with Resolution "+resX+"x"+resY+" and "+eyePoints.length+" EyePoints");
     }
 
     public Pixel getPixel(int y, int z) {
@@ -44,6 +45,7 @@ public class Camera {
                 pixel.calculateColor();
             }
         }
+        System.out.println("Rendered Scene successfully using EyePoint #"+(this.currentEyePoint+1));
     }
 
     public BufferedImage createImage(){
@@ -57,6 +59,7 @@ public class Camera {
             }
             y++;
         }
+        System.out.println("Created Image buffer to save as a file");
         return image;
     }
 }
