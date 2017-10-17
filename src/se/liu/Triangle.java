@@ -1,19 +1,17 @@
 package se.liu;
 
-public class Triangle {
+public class Triangle implements Object {
 
-    //vertex 3,  color, direction of normal (all private)
     private ColorDbl color;
     private Vector normal;
     private Vertex[] vertices = new Vertex[3];
 
-    public Triangle(ColorDbl color, Vertex v1, Vertex v2, Vertex v3) {
+    Triangle(ColorDbl color, Vertex v1, Vertex v2, Vertex v3) {
         this.color = color;
         this.vertices[0] = v1;
         this.vertices[1] = v2;
         this.vertices[2] = v3;
         this.calculateNormal();
-        System.out.println("Created new Triangle at P1( " + v1.getX() + " ; " + v1.getY() + " ; " + v1.getZ() + " ) P2( " + v2.getX() + " ; " + v2.getY() + " ; " + v2.getZ() + " ) P3( " + v3.getX() + " ; " + v3.getY() + " ; " + v3.getZ() + " )");
     }
 
     Triangle(ColorDbl color, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
@@ -27,7 +25,8 @@ public class Triangle {
         this.calculateNormal();
     }
 
-    ColorDbl getColor() {
+    @Override
+    public ColorDbl getColor() {
         return color;
     }
 
@@ -43,13 +42,14 @@ public class Triangle {
         this.normal = this.vertices[0].sub(this.vertices[1]).crossProduct(this.vertices[0].sub(this.vertices[2]));
     }
 
-    double rayIntersection(Ray arg) {
+    @Override
+    public double rayIntersection(Ray arg) {
         Vector T, E1, E2, D, P, Q;
         double dividend, t, u, v;
         T = arg.getStart().sub(this.vertices[0]);
         E1 = this.vertices[1].sub(this.vertices[0]);
         E2 = this.vertices[2].sub(this.vertices[0]);
-        D = arg.getEnd().sub(arg.getStart());
+        D = arg.getEnd().sub(arg.getStart()).unitVector();
         P = D.crossProduct(E2);
         Q = T.crossProduct(E1);
         dividend = P.dotProduct(E1);

@@ -11,8 +11,8 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         // Run jUnit Tests
-        System.out.println("Starting jUnit-Tests...");
-        junit.swingui.TestRunner.run(VectorTest.class);
+        //System.out.println("Starting jUnit-Tests...");
+        //junit.swingui.TestRunner.run(VectorTest.class);
 
         System.out.println("Starting process...");
 
@@ -36,6 +36,12 @@ public class Main {
         scene.addRectangle(new ColorDbl("cyan"), 10, -6, 5, 13, 0, 5, 13, 0, -5, 10, -6, -5);
         scene.addRectangle(new ColorDbl("blue"), 10, 6, 5, 13, 0, 5, 13, 0, -5, 10, 6, -5);
         scene.addRectangle(new ColorDbl("pink"), 10, 6, 5, 0, 6, 5, 0, 6, -5, 10, 6, -5);
+        // Spheres
+        scene.addSphere(new ColorDbl("lemon"),10,6,0,2);
+        scene.addSphere(new ColorDbl("orange"),13,0,5,4);
+        scene.addSphere(new ColorDbl("purple"),10,-6,-5,3);
+        // Tetrahedron
+        scene.addTetrahedron(new ColorDbl("sky"),5, -5, -5, 6, -5, -5, 5.5, -4.5, -3.5, 5.5, -4, -5);
         // Initialize two Eye Positions
         Vertex[] eyePoints = new Vertex[2];
         eyePoints[0] = new Vertex(-2, 0, 0);
