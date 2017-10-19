@@ -3,15 +3,17 @@ package se.liu;
 public class Triangle implements Object {
 
     private ColorDbl color;
+    Reflection reflection;
     private Vector normal;
     private Vertex[] vertices = new Vertex[3];
 
-    Triangle(ColorDbl color, Vertex v1, Vertex v2, Vertex v3) {
+    Triangle(ColorDbl color, Reflection reflection, Vertex v1, Vertex v2, Vertex v3) {
         this.color = color;
         this.vertices[0] = v1;
         this.vertices[1] = v2;
         this.vertices[2] = v3;
         this.calculateNormal();
+        this.reflection=reflection;
     }
 
     Triangle(ColorDbl color, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
@@ -28,6 +30,11 @@ public class Triangle implements Object {
     @Override
     public ColorDbl getColor() {
         return color;
+    }
+
+    @Override
+    public Reflection getReflection() {
+        return reflection;
     }
 
     public void setColor(ColorDbl color) {

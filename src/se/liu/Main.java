@@ -21,27 +21,29 @@ public class Main {
         int resY = 1000;
 
         Scene scene = new Scene();
+        //
+        Reflection standard = new Lambertian(0.8);
         // Floor
-        scene.addTriangle(new ColorDbl("white"), -3, 0, -5, 0, 6, -5, 0, -6, -5);
-        scene.addRectangle(new ColorDbl("white"), 10, 6, -5, 0, 6, -5, 0, -6, -5, 10, -6, -5);
-        scene.addTriangle(new ColorDbl("white"), 10, 6, -5, 10, -6, -5, 13, 0, -5);
+        scene.addTriangle(new ColorDbl("white"), standard, -3, 0, -5, 0, 6, -5, 0, -6, -5);
+        scene.addRectangle(new ColorDbl("white"), standard, 10, 6, -5, 0, 6, -5, 0, -6, -5, 10, -6, -5);
+        scene.addTriangle(new ColorDbl("white"), standard, 10, 6, -5, 10, -6, -5, 13, 0, -5);
         // Ceiling
-        scene.addTriangle(new ColorDbl("white"), -3, 0, 5, 0, 6, 5, 0, -6, 5);
-        scene.addRectangle(new ColorDbl("white"), 10, 6, 5, 0, 6, 5, 0, -6, 5, 10, -6, 5);
-        scene.addTriangle(new ColorDbl("white"), 10, 6, 5, 10, -6, 5, 13, 0, 5);
+        scene.addTriangle(new ColorDbl("white"), standard, -3, 0, 5, 0, 6, 5, 0, -6, 5);
+        scene.addRectangle(new ColorDbl("white"), standard, 10, 6, 5, 0, 6, 5, 0, -6, 5, 10, -6, 5);
+        scene.addTriangle(new ColorDbl("white"), standard, 10, 6, 5, 10, -6, 5, 13, 0, 5);
         // Walls
-        scene.addRectangle(new ColorDbl("red"), -3, 0, 5, 0, 6, 5, 0, 6, -5, -3, 0, -5);
-        scene.addRectangle(new ColorDbl("yellow"), -3, 0, 5, 0, -6, 5, 0, -6, -5, -3, 0, -5);
-        scene.addRectangle(new ColorDbl("green"), 10, -6, 5, 0, -6, 5, 0, -6, -5, 10, -6, -5);
-        scene.addRectangle(new ColorDbl("cyan"), 10, -6, 5, 13, 0, 5, 13, 0, -5, 10, -6, -5);
-        scene.addRectangle(new ColorDbl("blue"), 10, 6, 5, 13, 0, 5, 13, 0, -5, 10, 6, -5);
-        scene.addRectangle(new ColorDbl("pink"), 10, 6, 5, 0, 6, 5, 0, 6, -5, 10, 6, -5);
+        scene.addRectangle(new ColorDbl("red"), standard, -3, 0, 5, 0, 6, 5, 0, 6, -5, -3, 0, -5);
+        scene.addRectangle(new ColorDbl("yellow"), standard, -3, 0, 5, 0, -6, 5, 0, -6, -5, -3, 0, -5);
+        scene.addRectangle(new ColorDbl("green"), standard, 10, -6, 5, 0, -6, 5, 0, -6, -5, 10, -6, -5);
+        scene.addRectangle(new ColorDbl("cyan"), standard, 10, -6, 5, 13, 0, 5, 13, 0, -5, 10, -6, -5);
+        scene.addRectangle(new ColorDbl("blue"), standard, 10, 6, 5, 13, 0, 5, 13, 0, -5, 10, 6, -5);
+        scene.addRectangle(new ColorDbl("pink"), standard, 10, 6, 5, 0, 6, 5, 0, 6, -5, 10, 6, -5);
         // Spheres
-        scene.addSphere(new ColorDbl("lemon"),10,6,0,2);
-        scene.addSphere(new ColorDbl("orange"),13,0,5,4);
-        scene.addSphere(new ColorDbl("purple"),10,-6,-5,3);
+        scene.addSphere(new ColorDbl("lemon"), standard,10,6,0,2);
+        scene.addSphere(new ColorDbl("orange"), standard,13,0,5,4);
+        scene.addSphere(new ColorDbl("purple"), standard,10,-6,-5,3);
         // Tetrahedron
-        scene.addTetrahedron(new ColorDbl("sky"),5, -5, -5, 6, -5, -5, 5.5, -4.5, -3.5, 5.5, -4, -5);
+        scene.addTetrahedron(new ColorDbl("sky"), standard,5, 5, -5, 6, 5, -5, 5.5, 4.5, -3.5, 5.5, 4, -5);
         // Initialize two Eye Positions
         Vertex[] eyePoints = new Vertex[2];
         eyePoints[0] = new Vertex(-2, 0, 0);

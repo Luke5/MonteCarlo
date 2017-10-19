@@ -18,25 +18,25 @@ public class Scene {
         objects.add(object);
     }
 
-    void addTriangle(ColorDbl color, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
-        Triangle triangle = new Triangle(color, new Vertex(x1, y1, z1), new Vertex( x2, y2, z2), new Vertex( x3, y3, z3));
+    void addTriangle(ColorDbl color, Reflection reflection, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
+        Triangle triangle = new Triangle(color, reflection, new Vertex(x1, y1, z1), new Vertex( x2, y2, z2), new Vertex( x3, y3, z3));
         objects.add(triangle);
         System.out.println("Added new Triangle at P1( " + x1 + " ; " + y1 + " ; " + z1 + " ) P2( " + x2 + " ; " + y2 + " ; " + z2 + " ) P3( " + x3 + " ; " + y3 + " ; " + z3 + " )");
     }
 
-    void addRectangle(ColorDbl color, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3, double x4, double y4, double z4) {
-        Triangle t1 = new Triangle(color, new Vertex(x1, y1, z1), new Vertex(x2, y2, z2), new Vertex(x3, y3, z3));
-        Triangle t2 = new Triangle(color, new Vertex(x1, y1, z1), new Vertex(x3, y3, z3), new Vertex(x4, y4, z4));
+    void addRectangle(ColorDbl color, Reflection reflection, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3, double x4, double y4, double z4) {
+        Triangle t1 = new Triangle(color, reflection, new Vertex(x1, y1, z1), new Vertex(x2, y2, z2), new Vertex(x3, y3, z3));
+        Triangle t2 = new Triangle(color, reflection, new Vertex(x1, y1, z1), new Vertex(x3, y3, z3), new Vertex(x4, y4, z4));
         objects.add(t1);
         objects.add(t2);
         System.out.println("Added new Rectangle at P1( " + x1 + " ; " + y1 + " ; " + z1 + " ) P2( " + x2 + " ; " + y2 + " ; " + z2 + " ) P3( " + x3 + " ; " + y3 + " ; " + z3 + " ) P4( " + x4 + " ; " + y4 + " ; " + z4 + " )");
     }
 
-    void addTetrahedron(ColorDbl color, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3, double x4, double y4, double z4) {
-        Triangle t1 = new Triangle(color, new Vertex(x1, y1, z1), new Vertex(x2, y2, z2), new Vertex(x3, y3, z3));
-        Triangle t2 = new Triangle(color, new Vertex(x2, y2, z2), new Vertex(x3, y3, z3), new Vertex(x4, y4, z4));
-        Triangle t3 = new Triangle(color, new Vertex(x1, y1, z1), new Vertex(x3, y3, z3), new Vertex(x4, y4, z4));
-        Triangle t4 = new Triangle(color, new Vertex(x1, y1, z1), new Vertex(x2, y2, z2), new Vertex(x4, y4, z4));
+    void addTetrahedron(ColorDbl color, Reflection reflection, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3, double x4, double y4, double z4) {
+        Triangle t1 = new Triangle(color, reflection, new Vertex(x1, y1, z1), new Vertex(x2, y2, z2), new Vertex(x3, y3, z3));
+        Triangle t2 = new Triangle(color, reflection, new Vertex(x2, y2, z2), new Vertex(x3, y3, z3), new Vertex(x4, y4, z4));
+        Triangle t3 = new Triangle(color, reflection, new Vertex(x1, y1, z1), new Vertex(x3, y3, z3), new Vertex(x4, y4, z4));
+        Triangle t4 = new Triangle(color, reflection, new Vertex(x1, y1, z1), new Vertex(x2, y2, z2), new Vertex(x4, y4, z4));
         objects.add(t1);
         objects.add(t2);
         objects.add(t3);
@@ -44,8 +44,8 @@ public class Scene {
         System.out.println("Added new Tetrahedron at P1( " + x1 + " ; " + y1 + " ; " + z1 + " ) P2( " + x2 + " ; " + y2 + " ; " + z2 + " ) P3( " + x3 + " ; " + y3 + " ; " + z3 + " ) P4( " + x4 + " ; " + y4 + " ; " + z4 + " )");
     }
 
-    void addSphere(ColorDbl color, double x, double y, double z, double radius){
-        Sphere s = new Sphere(color,new Vertex(x,y,z),radius);
+    void addSphere(ColorDbl color, Reflection reflection, double x, double y, double z, double radius){
+        Sphere s = new Sphere(color, reflection, new Vertex(x,y,z),radius);
         objects.add(s);
         System.out.println("Added new Sphere at P( " + x + " ; " + y + " ; " + z + " ) with Radius "+radius);
     }

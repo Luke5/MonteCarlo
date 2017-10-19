@@ -3,11 +3,13 @@ package se.liu;
 public class Sphere implements Object {
 
     private ColorDbl color;
+    private Reflection reflection;
     private Vertex center;
     private double radius;
 
-    public Sphere(ColorDbl color, Vertex center, double radius) {
+    public Sphere(ColorDbl color, Reflection reflection, Vertex center, double radius) {
         this.color = color;
+        this.reflection=reflection;
         this.center = center;
         this.radius = radius;
     }
@@ -52,5 +54,10 @@ public class Sphere implements Object {
     @Override
     public ColorDbl getColor() {
         return color;
+    }
+
+    @Override
+    public Reflection getReflection() {
+        return reflection;
     }
 }
