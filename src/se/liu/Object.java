@@ -31,4 +31,16 @@ public abstract class Object {
     public Reflection getReflection() {
         return reflection;
     }
+
+    public abstract Ray getRandomRay();
+
+    public Direction getRandomDirection(){
+        return new Direction(Math.random()*Math.PI/2,Math.random()*2*Math.PI,1);
+    }
+
+    public double getFlux(){
+        return this.getRadiance()*Math.PI*this.getArea();
+    }
+
+    public abstract double getArea();
 }

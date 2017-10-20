@@ -25,7 +25,11 @@ public class Triangle extends Object {
         this.calculateNormal();
     }
 
-
+    public Vector getRandomPoint(){
+        double u = Math.random();
+        double v = Math.random()*(1-u);
+        return this.vertices[0].scalarMult(1-u-v).add(this.vertices[1].scalarMult(u)).add(this.vertices[2].scalarMult(v));
+    }
 
     public Vector getNormal() {
         return normal;
@@ -53,5 +57,15 @@ public class Triangle extends Object {
             t = -1;
         }
         return t;
+    }
+
+    @Override
+    public Ray getRandomRay() {
+        return new Ray(this.getRandomPoint(),this.getRandomPoint().add(this.getRandomDirection().getCartesian()));
+    }
+
+    @Override
+    public double getArea() {
+        return (1/2)*this.normal.length();
     }
 }

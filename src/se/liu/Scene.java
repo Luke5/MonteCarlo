@@ -4,7 +4,16 @@ import java.util.ArrayList;
 
 public class Scene {
     private ArrayList<Object> objects = new ArrayList<>();
-    private ArrayList<Intersection> radiositySources = new ArrayList<>();
+    private ArrayList<Object> lightSources = new ArrayList<>();
+    private ArrayList<Photon> photons = new ArrayList<>();
+    private Node photonMap;
+    private double searchRadius=0.1;
+    private double xmin = -3;
+    private double xmax = 13;
+    private double ymin = -6;
+    private double ymax = 6;
+    private double zmin = -5;
+    private double zmax = 5;
 
     public Scene(ArrayList<Object> objects) {
         this.objects = objects;
@@ -22,6 +31,7 @@ public class Scene {
     public void addLightSource(Object object) {
         object.setRadiance(1);
         objects.add(object);
+        lightSources.add(object);
         System.out.println("Added Light Source to Scene");
     }
 
@@ -61,6 +71,31 @@ public class Scene {
         return objects.get(i);
     }
 
+    void constructPhotonMap(int numberOfPhotons){
+        System.out.println("Creating Photon Map:");
+        System.out.print("0%");
+        int j=0;
+        for (Object lightSource:lightSources) {
+            for(int n=0;n<numberOfPhotons;n++){
+                Ray ray = lightSource.getRandomRay();
+                this.traceRay(ray);
+                ArrayList<Photon> shadowPhotons = ray.getPhotons();
+                Photon photon = ray.getFirstPhoton();
+                shadowPhotons.remove(photon);
+                photon.setFlux(lightSource.getFlux()/numberOfPhotons);
+                photons.add(photon);
+                photons.addAll(shadowPhotons);
+                System.out.print("\r");
+                System.out.print(((j*numberOfPhotons+n)*100.0/(numberOfPhotons*lightSources.size()))+"%");
+            }
+            j++;
+        }
+        photonMap= new Node(searchRadius,xmin,xmax,ymin,ymax,zmin,zmax,photons);
+        System.out.print("\r");
+        System.out.println("100%");
+        System.out.println(photons.size()+" Photons saved in Scene");
+    }
+
     void traceRay(Ray arg) {
         double min = -1;
         int i = 0;
@@ -87,7 +122,7 @@ public class Scene {
             if (t >= 0) {
                 arg.addIntersection(i, t);
                 if(object.getRadiance()>0){
-                    radiositySources.add(new Intersection(arg,i,t));
+                    radiositySources.add(new Photon(arg,i,t));
                 }
                 if (min == -1 || min > t) {
                     min = t;
@@ -96,10 +131,10 @@ public class Scene {
             }
             i++;
         }
-        ArrayList<Intersection> currentRadiositySources= new ArrayList<>();
+        ArrayList<Photon> currentRadiositySources= new ArrayList<>();
         currentRadiositySources.addAll(radiositySources);
-        for (Intersection intersection:arg.getIntersections()) {
-            for (Intersection lightSource: currentRadiositySources) {
+        for (Photon intersection:arg.getPhotons()) {
+            for (Photon lightSource: currentRadiositySources) {
                 Ray transfer = new Ray(intersection.getPosition(),lightSource.getPosition());
                 min = transfer.getLength();
                 for (Object object : objects) {

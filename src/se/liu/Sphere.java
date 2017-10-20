@@ -49,4 +49,14 @@ public class Sphere extends Object {
         return -1;
     }
 
+    @Override
+    public Ray getRandomRay() {
+        return new Ray(this.center,this.center.add(this.getRandomDirection().getCartesian()));
+    }
+
+    @Override
+    public double getArea() {
+        return 4*Math.PI*this.radius;
+    }
+
 }

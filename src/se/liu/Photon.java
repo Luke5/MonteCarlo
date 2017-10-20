@@ -1,9 +1,19 @@
 package se.liu;
 
-public class Intersection {
+public class Photon {
     private int i;
     private double t;
     private Vector position;
+    private Direction direction;
+    private double flux = -1;
+
+    public double getFlux() {
+        return flux;
+    }
+
+    public void setFlux(double flux) {
+        this.flux = flux;
+    }
 
     public int getI() {
         return i;
@@ -29,8 +39,14 @@ public class Intersection {
         this.position = position;
     }
 
-    public Intersection(Ray ray, int i, double t) {
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public Photon(Ray ray, int i, double t) {
         position = ray.getPoint(t);
+        this.direction=new Direction(ray);
+
         this.i = i;
         this.t = t;
     }

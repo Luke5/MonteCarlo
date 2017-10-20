@@ -47,6 +47,9 @@ public class Main {
         scene.addLightSource(new Sphere(new ColorDbl("white"),standard,5,0,5,0.5));
         // Tetrahedron
         scene.addTetrahedron(new ColorDbl("sky"), standard,5, 5, -5, 6, 5, -5, 5.5, 4.5, -3.5, 5.5, 4, -5);
+        // 1st Pass: Create Photon Map
+        scene.constructPhotonMap(1000000);
+
         // Initialize two Eye Positions
         Vertex[] eyePoints = new Vertex[2];
         eyePoints[0] = new Vertex(-2, 0, 0);

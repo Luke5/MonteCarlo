@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Ray {
     private Vector start, end;
-    private Intersection firstIntersection;
-    private ArrayList<Intersection> intersections = new ArrayList<>();
+    private Photon firstPhoton;
+    private ArrayList<Photon> photons = new ArrayList<>();
     private ColorDbl color;
 
     Ray(Vector start, Vector end) {
@@ -14,16 +14,16 @@ public class Ray {
         this.color = new ColorDbl("default");
     }
 
-    public Intersection getFirstIntersection() {
-        return firstIntersection;
+    public Photon getFirstPhoton() {
+        return firstPhoton;
     }
 
     void setFirstIntersection(int i, double t) {
-        firstIntersection=new Intersection(this,i,t);
+        firstPhoton =new Photon(this,i,t);
     }
 
-    ArrayList<Intersection> getIntersections() {
-        return intersections;
+    ArrayList<Photon> getPhotons() {
+        return photons;
     }
 
     Vector getPoint(double t){
@@ -35,7 +35,7 @@ public class Ray {
     }
 
     void addIntersection(int i, double t) {
-        this.intersections.add(new Intersection(this,i,t));
+        this.photons.add(new Photon(this,i,t));
     }
 
     ColorDbl getColor() {
@@ -48,6 +48,10 @@ public class Ray {
 
     Vector getStart() {
         return start;
+    }
+
+    public void setPhotons(ArrayList<Photon> photons) {
+        this.photons = photons;
     }
 
     public void setStart(Vertex start) {

@@ -3,16 +3,15 @@ package se.liu;
 public class Direction {
     private double inclination, azimuth;
     private Vector cartesian;
+
     public Direction(double inclination, double azimuth, double r) {
         this.inclination = inclination%(Math.PI/2);
         this.azimuth = azimuth%Math.PI;
         double x,y,z;
         x= r*Math.cos(azimuth)*Math.sin(inclination);
         y= r*Math.sin(azimuth)*Math.cos(inclination);
-        z=r*Math.cos(inclination);
-        cartesian.setX(x);
-        cartesian.setY(y);
-        cartesian.setZ(z);
+        z= r*Math.cos(inclination);
+        cartesian = new Vector(x,y,z);
     }
 
     public double getInclination() {
