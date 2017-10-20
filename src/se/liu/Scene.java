@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Scene {
     private ArrayList<Object> objects = new ArrayList<>();
+    private ArrayList<Intersection> radiositySources = new ArrayList<>();
 
     public Scene(ArrayList<Object> objects) {
         this.objects = objects;
@@ -16,6 +17,12 @@ public class Scene {
 
     public void addObject(Object object) {
         objects.add(object);
+    }
+
+    public void addLightSource(Object object) {
+        object.setRadiance(1);
+        objects.add(object);
+        System.out.println("Added Light Source to Scene");
     }
 
     void addTriangle(ColorDbl color, Reflection reflection, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
@@ -60,14 +67,58 @@ public class Scene {
         for (Object object : objects) {
             double t = object.rayIntersection(arg);
             if (t >= 0) {
-                arg.addIntersectionTriangle(i, t);
+                arg.addIntersection(i, t);
                 if (min == -1 || min > t) {
                     min = t;
-                    arg.setFirstIntersectionTriangle(i, t);
+                    arg.setFirstIntersection(i, t);
                     arg.setColor(object.getColor());
                 }
             }
             i++;
         }
     }
+
+/*
+    void traceRay(Ray arg) {
+        double min = -1;
+        int i = 0;
+        for (Object object : objects) {
+            double t = object.rayIntersection(arg);
+            if (t >= 0) {
+                arg.addIntersection(i, t);
+                if(object.getRadiance()>0){
+                    radiositySources.add(new Intersection(arg,i,t));
+                }
+                if (min == -1 || min > t) {
+                    min = t;
+                    arg.setFirstIntersection(i, t);
+                }
+            }
+            i++;
+        }
+        ArrayList<Intersection> currentRadiositySources= new ArrayList<>();
+        currentRadiositySources.addAll(radiositySources);
+        for (Intersection intersection:arg.getIntersections()) {
+            for (Intersection lightSource: currentRadiositySources) {
+                Ray transfer = new Ray(intersection.getPosition(),lightSource.getPosition());
+                min = transfer.getLength();
+                for (Object object : objects) {
+                    double t = object.rayIntersection(transfer);
+                    if (t >= 0) {
+                        min=Math.min(min,t);
+                    }
+                }
+                if(min==transfer.getLength()){
+                    Object object = this.getObject(intersection.getI());
+                    Object light = this.getObject(lightSource.getI());
+                    double brdf = object.getReflection().brdf(intersection.getPosition(),new Direction(arg),new Direction(transfer));
+                    double r = object.getColor().getR()*light.getColor().getR()*brdf/256;
+                    double g = object.getColor().getG()*light.getColor().getG()*brdf/256;
+                    double b = object.getColor().getB()*light.getColor().getB()*brdf/256;
+                    arg.setColor(new ColorDbl(r,g,b));
+                    radiositySources.add(intersection);
+                }
+            }
+        }
+    }*/
 }

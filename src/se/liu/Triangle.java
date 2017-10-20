@@ -1,23 +1,21 @@
 package se.liu;
 
-public class Triangle implements Object {
-
-    private ColorDbl color;
-    Reflection reflection;
+public class Triangle extends Object {
     private Vector normal;
     private Vertex[] vertices = new Vertex[3];
 
     Triangle(ColorDbl color, Reflection reflection, Vertex v1, Vertex v2, Vertex v3) {
-        this.color = color;
+        this.setColor(color);
         this.vertices[0] = v1;
         this.vertices[1] = v2;
         this.vertices[2] = v3;
         this.calculateNormal();
-        this.reflection=reflection;
+        this.setReflection(reflection);
     }
 
-    Triangle(ColorDbl color, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
-        this.color = color;
+    Triangle(ColorDbl color, Reflection reflection,  double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
+        this.setColor(color);
+        this.setReflection(reflection);
         Vertex v1 = new Vertex(x1, y1, z1);
         Vertex v2 = new Vertex(x2, y2, z2);
         Vertex v3 = new Vertex(x3, y3, z3);
@@ -27,19 +25,7 @@ public class Triangle implements Object {
         this.calculateNormal();
     }
 
-    @Override
-    public ColorDbl getColor() {
-        return color;
-    }
 
-    @Override
-    public Reflection getReflection() {
-        return reflection;
-    }
-
-    public void setColor(ColorDbl color) {
-        this.color = color;
-    }
 
     public Vector getNormal() {
         return normal;

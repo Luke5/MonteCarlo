@@ -11,7 +11,7 @@ public class OrenNayarDiffuse implements Reflection {
     }
 
     @Override
-    public double brdf(Vertex x, Direction win, Direction wout) {
+    public double brdf(Vector x, Direction win, Direction wout) {
         double A,B,a,b;
         A=1-(standardDeviation*standardDeviation/2*(standardDeviation*standardDeviation+0.33));
         B=(0.45*standardDeviation*standardDeviation)/(standardDeviation*standardDeviation+0.09);

@@ -8,7 +8,7 @@ public class Lambertian implements Reflection {
     }
 
     @Override
-    public double brdf(Vertex x, Direction win, Direction wout) {
+    public double brdf(Vector x, Direction win, Direction wout) {
         return reflectionCoefficient/Math.PI;
     }
 }

@@ -1,22 +1,20 @@
 package se.liu;
 
-public class Sphere implements Object {
+public class Sphere extends Object {
 
-    private ColorDbl color;
-    private Reflection reflection;
     private Vertex center;
     private double radius;
 
     public Sphere(ColorDbl color, Reflection reflection, Vertex center, double radius) {
-        this.color = color;
-        this.reflection=reflection;
+        this.setColor(color);
+        this.setReflection(reflection);
         this.center = center;
         this.radius = radius;
     }
-    public Sphere(ColorDbl color, double x, double y, double z, double radius) {
-        this.color = color;
-        Vertex center = new Vertex(x,y,z);
-        this.center = center;
+    public Sphere(ColorDbl color, Reflection reflection, double x, double y, double z, double radius) {
+        this.setColor(color);
+        this.setReflection(reflection);
+        this.center = new Vertex(x,y,z);
         this.radius = radius;
     }
 
@@ -51,13 +49,4 @@ public class Sphere implements Object {
         return -1;
     }
 
-    @Override
-    public ColorDbl getColor() {
-        return color;
-    }
-
-    @Override
-    public Reflection getReflection() {
-        return reflection;
-    }
 }

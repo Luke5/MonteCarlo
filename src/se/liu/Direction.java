@@ -37,4 +37,16 @@ public class Direction {
         this.azimuth= Math.atan(y/x);
         this.inclination= Math.atan(Math.sqrt(x*x+y*y)/z);
     }
+
+    public Direction(Ray ray){
+        this.cartesian=ray.getEnd().sub(ray.getStart());
+        double r = cartesian.length();
+        double x = cartesian.getX();
+        double y = cartesian.getY();
+        double z = cartesian.getZ();
+
+        this.azimuth= Math.atan(y/x);
+        this.inclination= Math.atan(Math.sqrt(x*x+y*y)/z);
+
+    }
 }

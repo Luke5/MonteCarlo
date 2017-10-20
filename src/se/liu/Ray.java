@@ -3,33 +3,39 @@ package se.liu;
 import java.util.ArrayList;
 
 public class Ray {
-    private Vertex start, end;
-    private double[] firstIntersectionTriangle = new double[2];
-    private ArrayList<double[]> intersectionTriangles = new ArrayList<double[]>();
+    private Vector start, end;
+    private Intersection firstIntersection;
+    private ArrayList<Intersection> intersections = new ArrayList<>();
     private ColorDbl color;
 
-    Ray(Vertex start, Vertex end) {
+    Ray(Vector start, Vector end) {
         this.start = start;
         this.end = end;
         this.color = new ColorDbl("default");
     }
 
-    public double[] getFirstIntersectionTriangle() {
-        return firstIntersectionTriangle;
+    public Intersection getFirstIntersection() {
+        return firstIntersection;
     }
 
-    void setFirstIntersectionTriangle(double i, double t) {
-        this.firstIntersectionTriangle[0] = i;
-        this.firstIntersectionTriangle[1] = t;
+    void setFirstIntersection(int i, double t) {
+        firstIntersection=new Intersection(this,i,t);
     }
 
-    public ArrayList<double[]> getIntersectionTriangles() {
-        return intersectionTriangles;
+    ArrayList<Intersection> getIntersections() {
+        return intersections;
     }
 
-    void addIntersectionTriangle(double i, double t) {
-        double[] array = {i, t};
-        this.intersectionTriangles.add(array);
+    Vector getPoint(double t){
+        return start.add(end.sub(start).unitVector().scalarMult(t));
+    }
+
+    double getLength(){
+        return end.sub(start).length();
+    }
+
+    void addIntersection(int i, double t) {
+        this.intersections.add(new Intersection(this,i,t));
     }
 
     ColorDbl getColor() {
@@ -40,7 +46,7 @@ public class Ray {
         this.color = color;
     }
 
-    Vertex getStart() {
+    Vector getStart() {
         return start;
     }
 
@@ -48,7 +54,7 @@ public class Ray {
         this.start = start;
     }
 
-    public Vertex getEnd() {
+    public Vector getEnd() {
         return end;
     }
 

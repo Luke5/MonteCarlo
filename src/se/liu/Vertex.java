@@ -7,4 +7,12 @@ public class Vertex extends Vector {
         super(x, y, z);
         this.w = new Direction(this);
     }
+
+    public Direction getDirection() {
+        return w;
+    }
+
+    public void setDirection(Direction w) {
+        this.w = w;
+    }
 }

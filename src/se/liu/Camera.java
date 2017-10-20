@@ -36,6 +36,9 @@ public class Camera {
     }
 
     void render(Scene scene) {
+        System.out.println("Rendering Scene:");
+        System.out.print("0%");
+        int j=0;
         for (Pixel[] pixelRow : pixelPlane) {
             for (Pixel pixel : pixelRow) {
                 Ray ray = new Ray(this.eyePoints[this.currentEyePoint], pixel.getPosition());
@@ -43,7 +46,12 @@ public class Camera {
                 pixel.addRay(ray);
                 pixel.calculateColor();
             }
+            j++;
+            System.out.print("\r");
+            System.out.print((j*100.0/(pixelPlane.length))+"%");
         }
+        System.out.print("\r");
+        System.out.println("100%");
         System.out.println("Rendered Scene successfully using EyePoint #" + (this.currentEyePoint + 1));
     }
 
