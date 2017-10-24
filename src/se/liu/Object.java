@@ -3,6 +3,7 @@ package se.liu;
 public abstract class Object {
     private ColorDbl color;
     private double radiance=0;
+    private Reflection reflection;
 
     public double getRadiance() {
         return radiance;
@@ -12,7 +13,7 @@ public abstract class Object {
         this.radiance = radiance;
     }
 
-    private Reflection reflection;
+    public Vector getSelfRadiance() { return new Vector(radiance*color.getR()/255.99,radiance*color.getG()/255.99,radiance*color.getB()/255.99); }
 
     abstract double rayIntersection(Ray ray);
 
@@ -24,23 +25,26 @@ public abstract class Object {
         this.color = color;
     }
 
-    void setReflection(Reflection reflection) {
-        this.reflection = reflection;
-    }
-
     public Reflection getReflection() {
         return reflection;
     }
 
-    public abstract Ray getRandomRay();
-
-    public Direction getRandomDirection(){
-        return new Direction(Math.random()*Math.PI/2,Math.random()*2*Math.PI,1);
+    void setReflection(Reflection reflection) {
+        this.reflection = reflection;
     }
 
-    public double getFlux(){
-        return this.getRadiance()*Math.PI*this.getArea();
-    }
+    public Ray getRandomRay(){
+        Vector point = this.getRandomPoint();
+        Direction localDirection = new Direction(Math.random() * Math.PI / 2, Math.random() * 2 * Math.PI, 1);
+        Direction direction = new Direction(localDirection.getCartesian(), this.getNormal(point));
+        return new Ray(point,point.add(direction.getCartesian()));
+    };
+
+    public double getFlux(){ return this.getRadiance()*Math.PI*this.getArea(); }
+
+    public abstract Vector getRandomPoint();
+
+    public abstract Vector getNormal(Vector surfacePoint);
 
     public abstract double getArea();
 }

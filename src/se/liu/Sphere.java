@@ -27,7 +27,6 @@ public class Sphere extends Object {
     }
 
     @Override
-
     public double rayIntersection(Ray ray) {
         double a,b,c,d1,d2,w;
         Vector l;
@@ -50,8 +49,16 @@ public class Sphere extends Object {
     }
 
     @Override
-    public Ray getRandomRay() {
-        return new Ray(this.center,this.center.add(this.getRandomDirection().getCartesian()));
+    public Vector getRandomPoint() {
+        Vector vector = new Vector(Math.random()-0.5,Math.random()-0.5,Math.random()-0.5).unitVector().scalarMult(radius);
+        return this.center.add(vector);
+    }
+
+    @Override
+    public Vector getNormal(Vector surfacePoint) {
+        Vector normal = center.sub(surfacePoint).unitVector();
+        //if(normal.getZ()<0){ return normal.invert(); }
+        return normal;
     }
 
     @Override

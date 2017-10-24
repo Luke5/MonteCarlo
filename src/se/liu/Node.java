@@ -2,23 +2,23 @@ package se.liu;
 
 import java.util.ArrayList;
 
-public class Node {
+class Node {
     private double xmin,xmax,ymin,ymax,zmin,zmax;
     private Node n1,n2,n3,n4,n5,n6,n7,n8;
-    private int n0=500;
     private ArrayList<Photon> photons;
 
-    public Node(double r0, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, ArrayList<Photon> photons) {
+    Node(double r0, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, ArrayList<Photon> photons) {
+        int n0 = 200;
         this.xmin = xmin;
         this.xmax = xmax;
         this.ymin = ymin;
         this.ymax = ymax;
         this.zmin = zmin;
         this.zmax = zmax;
-        if(photons.size()>n0 && Math.min((xmax-xmin),Math.min((ymax-ymin),(zmax-zmin)))>8*r0){
-            double xmed=xmin+(xmax-xmin);
-            double ymed=ymin+(ymax-ymin);
-            double zmed=zmin+(zmax-zmin);
+        if(photons.size()> n0 && Math.min((xmax-xmin),Math.min((ymax-ymin),(zmax-zmin)))>9*r0){
+            double xmed=xmin+(xmax-xmin)/2;
+            double ymed=ymin+(ymax-ymin)/2;
+            double zmed=zmin+(zmax-zmin)/2;
             ArrayList<Photon> p1 = new ArrayList<>();
             ArrayList<Photon> p2 = new ArrayList<>();
             ArrayList<Photon> p3 = new ArrayList<>();
@@ -63,14 +63,16 @@ public class Node {
         }
     }
 
-    public ArrayList<Photon> getPhotons(double x, double y, double z) {
+    ArrayList<Photon> getPhotons(Vector vector){ return this.getPhotons(vector.getX(),vector.getY(),vector.getZ()); }
+
+    ArrayList<Photon> getPhotons(double x, double y, double z) {
         if(photons!=null){
             return photons;
         }
         else{
-            double xmed=xmin+(xmax-xmin);
-            double ymed=ymin+(ymax-ymin);
-            double zmed=zmin+(zmax-zmin);
+            double xmed=xmin+(xmax-xmin)/2;
+            double ymed=ymin+(ymax-ymin)/2;
+            double zmed=zmin+(zmax-zmin)/2;
             if(x<xmed){
                 if(y<ymed){
                     if(z<zmed){ return n1.getPhotons(x,y,z); }
@@ -88,7 +90,8 @@ public class Node {
                 }
                 else{
                     if(z<zmed){ return n7.getPhotons(x,y,z); }
-                    else{ return n8.getPhotons(x,y,z); }
+                    else{
+                        return n8.getPhotons(x,y,z); }
                 }
             }            
         }

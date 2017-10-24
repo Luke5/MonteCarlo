@@ -18,8 +18,8 @@ public class Ray {
         return firstPhoton;
     }
 
-    void setFirstIntersection(int i, double t) {
-        firstPhoton =new Photon(this,i,t);
+    void setFirstIntersection(int i, double t, Vector normal) {
+        firstPhoton =new Photon(this,i,t,normal);
     }
 
     ArrayList<Photon> getPhotons() {
@@ -34,8 +34,8 @@ public class Ray {
         return end.sub(start).length();
     }
 
-    void addIntersection(int i, double t) {
-        this.photons.add(new Photon(this,i,t));
+    void addIntersection(int i, double t, Vector normal) {
+        this.photons.add(new Photon(this,i,t,normal));
     }
 
     ColorDbl getColor() {
@@ -44,6 +44,10 @@ public class Ray {
 
     void setColor(ColorDbl color) {
         this.color = color;
+    }
+
+    Vector getDirectionVector(){
+        return end.sub(start);
     }
 
     Vector getStart() {

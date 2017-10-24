@@ -1,6 +1,7 @@
 package se.liu;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Camera {
     private Vertex[] eyePoints;
@@ -42,14 +43,39 @@ public class Camera {
         for (Pixel[] pixelRow : pixelPlane) {
             for (Pixel pixel : pixelRow) {
                 Ray ray = new Ray(this.eyePoints[this.currentEyePoint], pixel.getPosition());
-                scene.traceRay(ray);
+                Vector l = scene.estimateRadiance(ray);
+                if(ray.getFirstPhoton()!=null){
+                    Object object = scene.getObject(ray.getFirstPhoton().getI());
+                    double r = object.getColor().getR()*l.getX();
+                    double g = object.getColor().getG()*l.getY();
+                    double b = object.getColor().getB()*l.getZ();
+                    ray.setColor(new ColorDbl(r,g,b));
+
+                }
                 pixel.addRay(ray);
-                pixel.calculateColor();
             }
             j++;
             System.out.print("\r");
             System.out.print((j*100.0/(pixelPlane.length))+"%");
         }
+
+        double max=0;
+        for (Pixel[] pixelRow : pixelPlane) {
+            for (Pixel pixel : pixelRow) {
+                ColorDbl color = pixel.getRay(0).getColor();
+                max=Math.max(max,color.getR());
+                max=Math.max(max,color.getG());
+                max=Math.max(max,color.getB());
+            }
+        }
+        for (Pixel[] pixelRow : pixelPlane) {
+            for (Pixel pixel : pixelRow) {
+                ColorDbl color = pixel.getRay(0).getColor();
+                //pixel.setColor(new ColorDbl(color.getR()*255.99/max,color.getG()*255.99/max,color.getB()*255.99/max));
+                pixel.calculateColor();
+            }
+        }
+
         System.out.print("\r");
         System.out.println("100%");
         System.out.println("Rendered Scene successfully using EyePoint #" + (this.currentEyePoint + 1));

@@ -43,9 +43,9 @@ public class Photon {
         return direction;
     }
 
-    public Photon(Ray ray, int i, double t) {
+    public Photon(Ray ray, int i, double t, Vector normal) {
         position = ray.getPoint(t);
-        this.direction=new Direction(ray);
+        this.direction=new Direction(ray.getDirectionVector(),normal);
 
         this.i = i;
         this.t = t;

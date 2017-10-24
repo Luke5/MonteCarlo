@@ -17,38 +17,59 @@ public class Main {
 
         System.out.println("Starting process...");
 
+        // Define the number of photons
+        int numberOfPhotons = 10000;
+
         // Define resolution of final image
         int resX = 1000;
         int resY = 1000;
 
         Scene scene = new Scene();
-        //
-        Reflection standard = new Lambertian(0.8);
+        
+        double standard = 0.75;
+        double high = 0.9;
+        double low = 0.5;
+
+        // Avoid escaping Rays by adding a giant sphere around the entire scene
+        scene.addSphere(0, new ColorDbl("white"), standard,5,0,0,20);
+
         // Floor
-        scene.addTriangle(new ColorDbl("white"), standard, -3, 0, -5, 0, 6, -5, 0, -6, -5);
-        scene.addRectangle(new ColorDbl("white"), standard, 10, 6, -5, 0, 6, -5, 0, -6, -5, 10, -6, -5);
-        scene.addTriangle(new ColorDbl("white"), standard, 10, 6, -5, 10, -6, -5, 13, 0, -5);
+        scene.addTriangle(0, new ColorDbl("white"), standard, -3, 0, -5, 0, 6, -5, 0, -6, -5);
+        scene.addRectangle(0, new ColorDbl("white"), standard, 10, 6, -5, 0, 6, -5, 0, -6, -5, 10, -6, -5);
+        scene.addTriangle(0, new ColorDbl("white"), standard, 10, 6, -5, 10, -6, -5, 13, 0, -5);
         // Ceiling
-        scene.addTriangle(new ColorDbl("white"), standard, -3, 0, 5, 0, 6, 5, 0, -6, 5);
-        scene.addRectangle(new ColorDbl("white"), standard, 10, 6, 5, 0, 6, 5, 0, -6, 5, 10, -6, 5);
-        scene.addTriangle(new ColorDbl("white"), standard, 10, 6, 5, 10, -6, 5, 13, 0, 5);
+        scene.addTriangle(0, new ColorDbl("white"), standard, -3, 0, 5, 0, 6, 5, 0, -6, 5);
+        scene.addRectangle(0, new ColorDbl("white"), standard, 10, 6, 5, 0, 6, 5, 0, -6, 5, 10, -6, 5);
+        scene.addTriangle(0, new ColorDbl("white"), standard, 10, 6, 5, 10, -6, 5, 13, 0, 5);
         // Walls
-        scene.addRectangle(new ColorDbl("red"), standard, -3, 0, 5, 0, 6, 5, 0, 6, -5, -3, 0, -5);
-        scene.addRectangle(new ColorDbl("yellow"), standard, -3, 0, 5, 0, -6, 5, 0, -6, -5, -3, 0, -5);
-        scene.addRectangle(new ColorDbl("green"), standard, 10, -6, 5, 0, -6, 5, 0, -6, -5, 10, -6, -5);
-        scene.addRectangle(new ColorDbl("cyan"), standard, 10, -6, 5, 13, 0, 5, 13, 0, -5, 10, -6, -5);
-        scene.addRectangle(new ColorDbl("blue"), standard, 10, 6, 5, 13, 0, 5, 13, 0, -5, 10, 6, -5);
-        scene.addRectangle(new ColorDbl("pink"), standard, 10, 6, 5, 0, 6, 5, 0, 6, -5, 10, 6, -5);
+        scene.addRectangle(0, new ColorDbl("red"), standard, -3, 0, 5, 0, 6, 5, 0, 6, -5, -3, 0, -5);
+        scene.addRectangle(0, new ColorDbl("yellow"), standard, -3, 0, 5, 0, -6, 5, 0, -6, -5, -3, 0, -5);
+        scene.addRectangle(0, new ColorDbl("green"), standard, 10, -6, 5, 0, -6, 5, 0, -6, -5, 10, -6, -5);
+        scene.addRectangle(0, new ColorDbl("cyan"), standard, 10, -6, 5, 13, 0, 5, 13, 0, -5, 10, -6, -5);
+        scene.addRectangle(0, new ColorDbl("blue"), standard, 10, 6, 5, 13, 0, 5, 13, 0, -5, 10, 6, -5);
+        scene.addRectangle(0, new ColorDbl("pink"), standard, 10, 6, 5, 0, 6, 5, 0, 6, -5, 10, 6, -5);
         // Spheres
-        scene.addSphere(new ColorDbl("lemon"), standard,10,6,0,2);
-        scene.addSphere(new ColorDbl("orange"), standard,13,0,5,4);
-        scene.addSphere(new ColorDbl("purple"), standard,10,-6,-5,3);
-        // Light
-        scene.addLightSource(new Sphere(new ColorDbl("white"),standard,5,0,5,0.5));
+        scene.addSphere(0, new ColorDbl("lemon"), high,10,6,0,2);
+        scene.addSphere(0, new ColorDbl("orange"), low,13,0,5,4);
+        scene.addSphere(0, new ColorDbl("purple"), standard,10,-6,-4,3);
         // Tetrahedron
-        scene.addTetrahedron(new ColorDbl("sky"), standard,5, 5, -5, 6, 5, -5, 5.5, 4.5, -3.5, 5.5, 4, -5);
+        scene.addTetrahedron(0, new ColorDbl("sky"), high,5, 5, -5, 6, 5, -5, 5.5, 4.5, -3.5, 5.5, 4, -5);
+
+        //Light Tetrahedron -Daft Punk Alike-
+        scene.addTriangle(20, new ColorDbl("white"),standard,7,0,2,5.5,1.5,2,5.5,-1.5,2);
+        scene.addTriangle(20, new ColorDbl("green"),standard,7,0,2,5.5,-1.5,2,6.25,0,3.5);
+        scene.addTriangle(20, new ColorDbl("red"),standard,7,0,2,6.25,0,3.5,5.5,1.5,2);
+        scene.addTriangle(20, new ColorDbl("blue"),standard,6.25,0,3.5,5.5,-1.5,2,5.5,1.5,2);
+
+
+        // Light
+        //scene.addSphere(16, new ColorDbl("white"),standard,5,0,5,0.7);
+        //scene.addTriangle(10, new ColorDbl("white"),standard,3,0,4.99,4.5,-1.5,4.99,4.5,1.5,4.99);
+        //scene.addTriangle(20, new ColorDbl("white"),standard,6,0,-4.99,7.5,-1.5,-4.99,7.5,1.5,-4.99);
+        //scene.addTriangle(10, new ColorDbl("white"),standard, -1.05,0,-1,-1.05,1.5,1.5,-1.05,-1.5,1.5);
+        //scene.addTriangle(15, new ColorDbl("white"),standard, 8,-1,2,8,0.5,3.5,8,-2.5,3.5);
         // 1st Pass: Create Photon Map
-        scene.constructPhotonMap(1000000);
+        scene.constructPhotonMap(numberOfPhotons);
 
         // Initialize two Eye Positions
         Vertex[] eyePoints = new Vertex[2];

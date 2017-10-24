@@ -12,63 +12,67 @@ public class ColorDbl {
 
     ColorDbl(String colorName) {
         switch (colorName) {
+            case "random":
+                this.r = Math.random()*255;
+                this.g = Math.random()*255;
+                this.b = Math.random()*255;
             case "white":
                 this.r = 255;
                 this.g = 255;
                 this.b = 255;
                 break;
             case "black":
-                this.r = 0;
-                this.g = 0;
-                this.b = 0;
+                this.r = 1;
+                this.g = 1;
+                this.b = 1;
                 break;
             case "red":
                 this.r = 255;
-                this.g = 0;
-                this.b = 0;
+                this.g = 5;
+                this.b = 5;
                 break;
             case "green":
-                this.r = 0;
+                this.r = 5;
                 this.g = 255;
-                this.b = 0;
+                this.b = 5;
                 break;
             case "blue":
-                this.r = 0;
-                this.g = 0;
+                this.r = 5;
+                this.g = 5;
                 this.b = 255;
                 break;
             case "yellow":
                 this.r = 255;
                 this.g = 255;
-                this.b = 0;
+                this.b = 5;
                 break;
             case "pink":
                 this.r = 255;
-                this.g = 0;
+                this.g = 5;
                 this.b = 255;
                 break;
             case "cyan":
-                this.r = 0;
+                this.r = 5;
                 this.g = 255;
                 this.b = 255;
                 break;
             case "orange":
                 this.r = 255;
                 this.g = 128;
-                this.b = 0;
+                this.b = 5;
                 break;
             case "lemon":
                 this.r = 128;
                 this.g = 255;
-                this.b = 0;
+                this.b = 5;
                 break;
             case "purple":
                 this.r = 128;
-                this.g = 0;
+                this.g = 5;
                 this.b = 255;
                 break;
             case "sky":
-                this.r = 0;
+                this.r = 5;
                 this.g = 128;
                 this.b = 255;
                 break;

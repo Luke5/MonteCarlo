@@ -1,5 +1,5 @@
 package se.liu;
 
 public interface Reflection {
-    double brdf(Vector x, Direction win, Direction wout);
+    Vector brdf(Vector x, Direction win, Direction wout);
 }

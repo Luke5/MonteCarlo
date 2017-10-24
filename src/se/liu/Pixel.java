@@ -3,6 +3,7 @@ package se.liu;
 import java.util.ArrayList;
 
 public class Pixel {
+
     private ColorDbl color;
     private ArrayList<Ray> rays = new ArrayList<>();
     private Vertex position;
@@ -21,6 +22,10 @@ public class Pixel {
 
     ColorDbl getColor() {
         return color;
+    }
+
+    public void setColor(ColorDbl color) {
+        this.color = color;
     }
 
     void calculateColor() {
