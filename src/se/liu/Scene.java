@@ -9,7 +9,7 @@ public class Scene {
     private ArrayList<Photon> photons = new ArrayList<>();
     private Node photonMap;
     private double searchRadius=0.005;
-    private double probability=0.7;
+    private double probability=0.75;
     private double filterConstant=1;
     private double standartDeviation=0.05;
     private double totalLightArea=0;
@@ -136,7 +136,7 @@ public class Scene {
         for (Object object : objects) {
             if(!object.equals(self)){
                 double t = object.rayIntersection(arg);
-                if (t >=0) {
+                if (t >0) {
                     arg.addIntersection(i, t, object.getNormal(arg.getPoint(t)));
                     if (min == -1 || min > t) {
                         min = t;
@@ -148,9 +148,9 @@ public class Scene {
         }
         if(min==-1){
             errors++;
-            System.out.println("Couldn't trace ray! It might have escaped the scene. Error #"+errors);
+/*            System.out.println("Couldn't trace ray! It might have escaped the scene. Error #"+errors);
             arg.getStart().printVector("Start: ");
-            arg.getEnd().printVector("End: ");
+            arg.getEnd().printVector("End: ");*/
         }
     }
 
@@ -196,29 +196,45 @@ public class Scene {
                 sum=sum.add(brdf.mult(lightSource.getSelfRadiance().scalarMult(lightSource.getArea()*Math.cos(a)*Math.cos(b)/(d*d))));
             }
         }
-        return sum;
+        return sum.scalarMult(1.0/i);
     }
 
     public Vector whittedRayTrace(Ray ray){
         Photon intersection = ray.getFirstPhoton();
         Vector sum=new Vector(0,0,0);
         double u1 = Math.random();
-        if(u1<probability){
-            double azimuth = Math.PI*u1/probability;
-            if(azimuth>2*Math.PI){
+        if (objects.get(intersection.getI()).getRadiance()==0){
+            double azimuth = 2*Math.PI*u1/probability;
+            if(azimuth<2*Math.PI){
                 Object object = objects.get(intersection.getI());
                 double u2 = Math.random();
                 double elevation = Math.acos(Math.sqrt(u2));
-                Direction localDirection = new Direction(elevation,azimuth,1);
                 Vector objectNormal = object.getNormal(intersection.getPosition());
-                Direction reflectionDirection = new Direction(localDirection.getCartesian(), objectNormal);
-                Ray reflection= new Ray(intersection.getPosition(), reflectionDirection.getCartesian());
+                Direction reflectionDirection = new Direction(elevation,azimuth,1,objectNormal);
+                //if(ray.getDirectionVector().angleTo(objectNormal)<(Math.PI/2)){ objectNormal=objectNormal.invert(); }
+                //Direction reflectionDirection = new Direction(localDirection.getCartesian(), objectNormal);
+                Ray reflection;
+                if(Math.abs(ray.getDirectionVector().angleTo(objectNormal))<(Math.PI/2)){
+                    reflection= new Ray(intersection.getPosition(), intersection.getPosition().add(reflectionDirection.getAbsoluteCartesian().invert()));
+                }
+                else{
+                    reflection= new Ray(intersection.getPosition(), intersection.getPosition().add(reflectionDirection.getAbsoluteCartesian()));
+                }
+/*                System.out.print("Incl: "+localDirection.getInclination()+" Azim: "+localDirection.getAzimuth());
+            localDirection.getCartesian().printVector(" Local Cartesian-Vec: ");
+            objectNormal.printVector("Object-Normal: ");
+            System.out.print("Incl: "+reflectionDirection.getInclination()+" Azim: "+reflectionDirection.getAzimuth());
+            reflectionDirection.getCartesian().printVector(" Reflection Cartesian-Vec: ");
+            reflection.getStart().printVector("Start: ");
+            reflection.getEnd().printVector("End: ");*/
                 traceRay(reflection,object);
-                Vector brdf = object.getReflection().brdf(intersection.getPosition(),reflectionDirection,new Direction(ray.getDirectionVector(),objectNormal).invert());
-                sum=sum.add(whittedRayTrace(reflection).scalarMult(Math.PI/probability).mult(brdf));
+                if(reflection.getFirstPhoton()!=null){
+                    Vector brdf = object.getReflection().brdf(intersection.getPosition(),reflectionDirection,new Direction(ray.getDirectionVector(),objectNormal).invert());
+                    sum=whittedRayTrace(reflection).mult(brdf).scalarMult(Math.PI/probability);
+                }
             }
+            else{ return objects.get(intersection.getI()).getSelfRadiance(); }
         }
-        sum=sum.add(objects.get(intersection.getI()).getSelfRadiance());
         return sum.add(directLight(ray));
     }
 
@@ -247,7 +263,11 @@ public class Scene {
             //System.out.println("--MC");
             return whittedRayTrace(ray).add(objects.get(intersection.getI()).getSelfRadiance());
         }
-        //else{System.out.println("PM--");}
+        else{System.out.println("PM--");}
         return sum;
+    }
+
+    public int getErrors() {
+        return errors;
     }
 }

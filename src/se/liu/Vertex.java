@@ -5,7 +5,6 @@ public class Vertex extends Vector {
 
     Vertex(double x, double y, double z) {
         super(x, y, z);
-        this.w = new Direction(this,new Vector(0,0,1));
     }
 
     public Direction getDirection() {

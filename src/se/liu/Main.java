@@ -56,20 +56,20 @@ public class Main {
         scene.addTetrahedron(0, new ColorDbl("sky"), high,5, 5, -5, 6, 5, -5, 5.5, 4.5, -3.5, 5.5, 4, -5);
 
         //Light Tetrahedron -Daft Punk Alike-
-        scene.addTriangle(20, new ColorDbl("white"),standard,7,0,2,5.5,1.5,2,5.5,-1.5,2);
+        /*scene.addTriangle(20, new ColorDbl("white"),standard,7,0,2,5.5,1.5,2,5.5,-1.5,2);
         scene.addTriangle(20, new ColorDbl("green"),standard,7,0,2,5.5,-1.5,2,6.25,0,3.5);
         scene.addTriangle(20, new ColorDbl("red"),standard,7,0,2,6.25,0,3.5,5.5,1.5,2);
         scene.addTriangle(20, new ColorDbl("blue"),standard,6.25,0,3.5,5.5,-1.5,2,5.5,1.5,2);
-
+*/
 
         // Light
         //scene.addSphere(16, new ColorDbl("white"),standard,5,0,5,0.7);
-        //scene.addTriangle(10, new ColorDbl("white"),standard,3,0,4.99,4.5,-1.5,4.99,4.5,1.5,4.99);
-        //scene.addTriangle(20, new ColorDbl("white"),standard,6,0,-4.99,7.5,-1.5,-4.99,7.5,1.5,-4.99);
-        //scene.addTriangle(10, new ColorDbl("white"),standard, -1.05,0,-1,-1.05,1.5,1.5,-1.05,-1.5,1.5);
+        //scene.addTriangle(1000, new ColorDbl("white"),standard,3,0,4.99,4.5,-1.5,4.99,4.5,1.5,4.99);
+        //scene.addTriangle(1000, new ColorDbl("white"),standard,6,0,-4.99,7.5,-1.5,-4.99,7.5,1.5,-4.99);
+        scene.addTriangle(2000, new ColorDbl("white"),standard, -1.05,0,-1,-1.05,1.5,1.5,-1.05,-1.5,1.5);
         //scene.addTriangle(15, new ColorDbl("white"),standard, 8,-1,2,8,0.5,3.5,8,-2.5,3.5);
         // 1st Pass: Create Photon Map
-        scene.constructPhotonMap(numberOfPhotons);
+        //scene.constructPhotonMap(numberOfPhotons);
 
         // Initialize two Eye Positions
         Vertex[] eyePoints = new Vertex[2];
@@ -98,7 +98,8 @@ public class Main {
         camera.render(scene);
         // Writing all Pixels into a BufferedImage and writing into jpg-file
         BufferedImage image = camera.createImage();
-        File outputfile = new File("image.jpg");
+        int name = (int) System.currentTimeMillis();
+        File outputfile = new File("image"+name+".jpg");
         ImageIO.write(image, "jpg", outputfile);
         System.out.println("Saved Image-File to directory");
 

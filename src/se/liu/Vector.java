@@ -1,5 +1,7 @@
 package se.liu;
 
+import static java.lang.Double.NaN;
+
 public class Vector {
     private double x, y, z;
 
@@ -65,6 +67,9 @@ public class Vector {
 
     public Vector unitVector() {
         double length = this.length();
+        if (length==0){
+            System.out.println("Fatal Error: Can not create Unit Vector from a Zero Vector!");
+        }
         return new Vector(this.x / length, this.y / length, this.z / length);
     }
 
@@ -73,7 +78,8 @@ public class Vector {
     }
 
     public Vector rotateAroundAxis(Vector axis, double angle){
-        if(angle==0){ return this; }
+        if(angle%(2*Math.PI)==0){ return this; }
+        if(axis.length()==0){ return this; }
         axis=axis.unitVector();
         double u,v,w;
         u=axis.getX();

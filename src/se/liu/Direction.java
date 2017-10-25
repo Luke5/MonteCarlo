@@ -3,15 +3,19 @@ package se.liu;
 public class Direction {
     private double inclination, azimuth;
     private Vector cartesian;
+    private Vector absoluteCartesian;
+    Vector normalSystem = new Vector(0, 0, 1);
 
-    public Direction(double inclination, double azimuth, double r) {
+    public Direction(double inclination, double azimuth, double r,  Vector normal) {
         this.inclination = inclination;
         this.azimuth = azimuth;
         double x,y,z;
         x= r*Math.cos(azimuth)*Math.sin(inclination);
         y= r*Math.sin(azimuth)*Math.cos(inclination);
         z= r*Math.cos(inclination);
-        cartesian = new Vector(x,y,z);
+        absoluteCartesian = new Vector(x,y,z);
+        cartesian=absoluteCartesian.rotateAroundAxis(normal.crossProduct(normalSystem),normal.angleTo(normalSystem)).unitVector();
+
     }
 
     public double getInclination() {
@@ -56,8 +60,12 @@ public class Direction {
 
     }*/
 
+    public Vector getAbsoluteCartesian() {
+        return absoluteCartesian;
+    }
+
     public Direction(Vector cartesian, Vector normal) {
-        Vector normalSystem = new Vector(0, 0, 1);
+        absoluteCartesian=cartesian;
         cartesian=cartesian.rotateAroundAxis(normal.crossProduct(normalSystem),normal.angleTo(normalSystem)).unitVector();
         double r = cartesian.length();
         double x = cartesian.getX();
@@ -66,9 +74,9 @@ public class Direction {
 
         this.azimuth= Math.atan(y/x)%(Math.PI*2);
         this.inclination= Math.atan(Math.sqrt(x*x+y*y)/z)%(Math.PI/2);
-        x= r*Math.cos(azimuth)*Math.sin(inclination);
+/*        x= r*Math.cos(azimuth)*Math.sin(inclination);
         y= r*Math.sin(azimuth)*Math.cos(inclination);
-        z= r*Math.cos(inclination);
+        z= r*Math.cos(inclination);*/
         this.cartesian = new Vector(x,y,z);
     }
 

@@ -56,8 +56,7 @@ public class Sphere extends Object {
 
     @Override
     public Vector getNormal(Vector surfacePoint) {
-        Vector normal = center.sub(surfacePoint).unitVector();
-        //if(normal.getZ()<0){ return normal.invert(); }
+        Vector normal = surfacePoint.sub(center).unitVector();
         return normal;
     }
 

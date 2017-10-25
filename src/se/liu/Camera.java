@@ -43,7 +43,8 @@ public class Camera {
         for (Pixel[] pixelRow : pixelPlane) {
             for (Pixel pixel : pixelRow) {
                 Ray ray = new Ray(this.eyePoints[this.currentEyePoint], pixel.getPosition());
-                Vector l = scene.estimateRadiance(ray);
+                scene.traceRay(ray,null);
+                Vector l = scene.whittedRayTrace(ray);
                 if(ray.getFirstPhoton()!=null){
                     Object object = scene.getObject(ray.getFirstPhoton().getI());
                     double r = object.getColor().getR()*l.getX();
@@ -78,7 +79,7 @@ public class Camera {
 
         System.out.print("\r");
         System.out.println("100%");
-        System.out.println("Rendered Scene successfully using EyePoint #" + (this.currentEyePoint + 1));
+        System.out.println("Rendered Scene successfully using EyePoint #" + (this.currentEyePoint + 1) + " with "+scene.getErrors()+" ERRORS!");
     }
 
     BufferedImage createImage() {

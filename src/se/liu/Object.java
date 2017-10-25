@@ -35,9 +35,8 @@ public abstract class Object {
 
     public Ray getRandomRay(){
         Vector point = this.getRandomPoint();
-        Direction localDirection = new Direction(Math.random() * Math.PI / 2, Math.random() * 2 * Math.PI, 1);
-        Direction direction = new Direction(localDirection.getCartesian(), this.getNormal(point));
-        return new Ray(point,point.add(direction.getCartesian()));
+        Direction direction = new Direction(Math.random() * Math.PI / 2, Math.random() * 2 * Math.PI, 1, this.getNormal(point));
+        return new Ray(point,point.add(direction.getAbsoluteCartesian()));
     };
 
     public double getFlux(){ return this.getRadiance()*Math.PI*this.getArea(); }

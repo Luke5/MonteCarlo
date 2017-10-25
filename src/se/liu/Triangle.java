@@ -40,7 +40,8 @@ public class Triangle extends Object {
     }
 
     private void calculateNormal() {
-        this.normal = this.vertices[0].sub(this.vertices[1]).crossProduct(this.vertices[0].sub(this.vertices[2]));
+        this.normal = this.vertices[0].sub(this.vertices[1]).crossProduct(this.vertices[0].sub(this.vertices[2])).unitVector();
+        normal.printVector("Triangle Normal: ");
     }
 
     @Override
