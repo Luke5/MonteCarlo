@@ -66,16 +66,20 @@ component, formatting, style, styling, insert
 \end{IEEEkeywords}
 
 \section{Introduction}
-Raytracing is a useful tool in computer graphics. By calculating and simulating how rays of light interfere and interact gives a realistic result.
-Transparent object such as glass or a water surface can't be shown with a texture since they have no color. By using raytracing these objects can be created with a realistic result.
+Raytracing is a useful tool in computer graphics. By calculating and simulating how rays of light interfere and interact gives a realistic result. When a ray is shot through the scene four things can happen to it absorption, reflection, refraction or fluorescence.
+If the ray is absorbed it hits the surface and no further calculations are needed. If the ray is reflected it's mirrored in the surfaces normal and continues to be calculated. If the ray is refracted on a transparent surface the ray changes direction on impact with the surface and continues to be calculated. If the ray encounters fluorescence it is absorbed by an object with chemical properties that in turn starts emitting light.
+The important part of the calculation is to determine which rays that fall upon the camera. 
+Transparent object such as glass or a water surface can't be shown as an object with a texture since they have no color. 
+These objects visibility is determined by how light reflects and refracts the objects. By using raytracing these objects can be created with a realistic result.
 
-Raytracing calculations can take a long time to calculate and thus they're only suitable for creating single images and not for contunously rendered video games. 
+Raytracing calculations can take a long time to calculate and thus they're only suitable for creating single images and not for continuously rendered video games. 
 This report covers the implementation and result of a Monte Carlo ray tracer.
 This report discusses methods presented in the report Global Illumination using Photon Maps by Henrik Wann Jensen
 \section{Ease of Use}
 
 \subsection{Background}
 
+The first algorithm that handled ray tracing was implemented by Arthur Appel in 1968. This method casts rays from each pixel in the camera/eye screen and exchanging each pixel with the first pixel each ray intersects with. 
 (reference from: "http://www.cs.cornell.edu/courses/cs4620/2013fa/lectures/22mcrt.pdf")
 Basic ray tracing methods use one ray per pixel, one shadow ray fror every point of light and one reflection ray, in some cases a refraction ray is added, for all interfering surfaces.
 
