@@ -42,25 +42,30 @@ public class Camera {
         int j=0;
         for (Pixel[] pixelRow : pixelPlane) {
             for (Pixel pixel : pixelRow) {
-                Ray ray = new Ray(this.eyePoints[this.currentEyePoint], pixel.getPosition());
-                scene.traceRay(ray,null);
-                Vector l = scene.whittedRayTrace(ray);
-                if(ray.getFirstPhoton()!=null){
-                    Object object = scene.getObject(ray.getFirstPhoton().getI());
-                    double r = object.getColor().getR()*l.getX();
-                    double g = object.getColor().getG()*l.getY();
-                    double b = object.getColor().getB()*l.getZ();
-                    ray.setColor(new ColorDbl(r,g,b));
+                for (int iteration=0; iteration <16; iteration++){
 
+                    Ray ray = new Ray(this.eyePoints[this.currentEyePoint], pixel.getPosition());
+                    scene.traceRay(ray,null);
+                    Vector l = scene.whittedRayTrace(ray);
+                    if(ray.getFirstPhoton()!=null){
+                        Object object = scene.getObject(ray.getFirstPhoton().getI());
+                        double r = object.getColor().getR()*l.getX();
+                        double g = object.getColor().getG()*l.getY();
+                        double b = object.getColor().getB()*l.getZ();
+                        ray.setColor(new ColorDbl(r,g,b));
+
+                    }
+                    pixel.addRay(ray);
                 }
-                pixel.addRay(ray);
+                pixel.calculateColor();
+                pixel.clearRays();
             }
             j++;
             System.out.print("\r");
             System.out.print((j*100.0/(pixelPlane.length))+"%");
         }
 
-        double max=0;
+        /*double max=0;
         for (Pixel[] pixelRow : pixelPlane) {
             for (Pixel pixel : pixelRow) {
                 ColorDbl color = pixel.getRay(0).getColor();
@@ -72,10 +77,10 @@ public class Camera {
         for (Pixel[] pixelRow : pixelPlane) {
             for (Pixel pixel : pixelRow) {
                 ColorDbl color = pixel.getRay(0).getColor();
-                //pixel.setColor(new ColorDbl(color.getR()*255.99/max,color.getG()*255.99/max,color.getB()*255.99/max));
-                pixel.calculateColor();
+                pixel.setColor(new ColorDbl(color.getR()*255.99/max,color.getG()*255.99/max,color.getB()*255.99/max));
+
             }
-        }
+        }*/
 
         System.out.print("\r");
         System.out.println("100%");

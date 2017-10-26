@@ -24,6 +24,10 @@ public class Pixel {
         return color;
     }
 
+    public void clearRays(){
+        rays.clear();
+    }
+
     public void setColor(ColorDbl color) {
         this.color = color;
     }

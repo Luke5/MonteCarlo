@@ -7,14 +7,14 @@ public class Direction {
     Vector normalSystem = new Vector(0, 0, 1);
 
     public Direction(double inclination, double azimuth, double r,  Vector normal) {
-        this.inclination = inclination;
-        this.azimuth = azimuth;
+        this.inclination = inclination%(Math.PI/2);
+        this.azimuth = azimuth%(Math.PI*2);
         double x,y,z;
         x= r*Math.cos(azimuth)*Math.sin(inclination);
         y= r*Math.sin(azimuth)*Math.cos(inclination);
         z= r*Math.cos(inclination);
-        absoluteCartesian = new Vector(x,y,z);
-        cartesian=absoluteCartesian.rotateAroundAxis(normal.crossProduct(normalSystem),normal.angleTo(normalSystem)).unitVector();
+        this.cartesian = new Vector(x,y,z);
+        this.absoluteCartesian=cartesian.rotateAroundAxis(normal.crossProduct(normalSystem).invert(),normal.angleTo(normalSystem)).unitVector();
 
     }
 
@@ -64,9 +64,9 @@ public class Direction {
         return absoluteCartesian;
     }
 
-    public Direction(Vector cartesian, Vector normal) {
-        absoluteCartesian=cartesian;
-        cartesian=cartesian.rotateAroundAxis(normal.crossProduct(normalSystem),normal.angleTo(normalSystem)).unitVector();
+    public Direction(Vector absoluteCartesian, Vector normal) {
+        this.absoluteCartesian=absoluteCartesian;
+        this.cartesian=absoluteCartesian.rotateAroundAxis(normal.crossProduct(normalSystem),normal.angleTo(normalSystem)).unitVector();
         double r = cartesian.length();
         double x = cartesian.getX();
         double y = cartesian.getY();
@@ -76,11 +76,7 @@ public class Direction {
         this.inclination= Math.atan(Math.sqrt(x*x+y*y)/z)%(Math.PI/2);
 /*        x= r*Math.cos(azimuth)*Math.sin(inclination);
         y= r*Math.sin(azimuth)*Math.cos(inclination);
-        z= r*Math.cos(inclination);*/
-        this.cartesian = new Vector(x,y,z);
-    }
-
-    public Direction invert() {
-        return new Direction(this.cartesian.invert(), new Vector(0,0,1));
+        z= r*Math.cos(inclination);
+        this.cartesian = new Vector(x,y,z);*/
     }
 }

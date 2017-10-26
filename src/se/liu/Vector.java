@@ -79,7 +79,10 @@ public class Vector {
 
     public Vector rotateAroundAxis(Vector axis, double angle){
         if(angle%(2*Math.PI)==0){ return this; }
-        if(axis.length()==0){ return this; }
+        if(axis.length()==0){
+            if(angle==Math.PI){ return this.invert(); }
+            return this;
+        }
         axis=axis.unitVector();
         double u,v,w;
         u=axis.getX();

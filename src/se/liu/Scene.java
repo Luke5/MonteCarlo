@@ -9,7 +9,7 @@ public class Scene {
     private ArrayList<Photon> photons = new ArrayList<>();
     private Node photonMap;
     private double searchRadius=0.005;
-    private double probability=0.75;
+    private double probability=0.7;
     private double filterConstant=1;
     private double standartDeviation=0.05;
     private double totalLightArea=0;
@@ -37,10 +37,18 @@ public class Scene {
         objects.add(triangle);
         if(radiance>0){
             lightSources.add(triangle);
-            totalLightArea+=triangle.getArea();            
+            totalLightArea+=triangle.getArea();
         }
         objects.add(triangle);
         System.out.println("Added new Triangle with Radiance: "+radiance+" at P1( " + x1 + " ; " + y1 + " ; " + z1 + " ) P2( " + x2 + " ; " + y2 + " ; " + z2 + " ) P3( " + x3 + " ; " + y3 + " ; " + z3 + " )");
+    }
+
+    void addSpecularTriangle(ColorDbl color, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
+        Reflection reflection = new Specular(1.5,color.getR()/255.99,color.getG()/255.99,color.getB()/255.99);
+        Triangle triangle = new Triangle(color, reflection, new Vertex(x1, y1, z1), new Vertex( x2, y2, z2), new Vertex( x3, y3, z3));
+        objects.add(triangle);
+        objects.add(triangle);
+        System.out.println("Added new Specular Triangle at P1( " + x1 + " ; " + y1 + " ; " + z1 + " ) P2( " + x2 + " ; " + y2 + " ; " + z2 + " ) P3( " + x3 + " ; " + y3 + " ; " + z3 + " )");
     }
     
     void addRectangle(double radiance, ColorDbl color,  double reflectionCoefficient, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3, double x4, double y4, double z4) {
@@ -99,6 +107,13 @@ public class Scene {
         System.out.println("Added new Sphere at P( " + x + " ; " + y + " ; " + z + " ) with Radius "+radius);
     }
 
+    void addSpecularSphere(ColorDbl color, double x, double y, double z, double radius){
+        Reflection reflection = new Specular(1.5, color.getR()/255.99,color.getG()/255.99,color.getB()/255.99);
+        Sphere s = new Sphere(color, reflection, new Vertex(x,y,z),radius);
+        objects.add(s);
+        System.out.println("Added new specular transparent Sphere at P( " + x + " ; " + y + " ; " + z + " ) with Radius "+radius);
+    }
+
     public Object getObject(int i) {
         return objects.get(i);
     }
@@ -134,9 +149,12 @@ public class Scene {
         double min = -1;
         int i = 0;
         for (Object object : objects) {
-            if(!object.equals(self)){
+            boolean isSphere= (self instanceof Sphere);
+            if(!object.equals(self) || isSphere){
+                double minDist=0;
+                if (object.equals(self) && isSphere){ minDist=0.001; }
                 double t = object.rayIntersection(arg);
-                if (t >0) {
+                if (t >= minDist) {
                     arg.addIntersection(i, t, object.getNormal(arg.getPoint(t)));
                     if (min == -1 || min > t) {
                         min = t;
@@ -148,9 +166,9 @@ public class Scene {
         }
         if(min==-1){
             errors++;
-/*            System.out.println("Couldn't trace ray! It might have escaped the scene. Error #"+errors);
-            arg.getStart().printVector("Start: ");
-            arg.getEnd().printVector("End: ");*/
+            System.out.println(" - Couldn't trace ray! It might have escaped the scene. Error #"+errors);
+            arg.getStart().printVector("---Start: ");
+            arg.getEnd().printVector("-----End: ");
         }
     }
 
@@ -173,7 +191,7 @@ public class Scene {
         Vector sum = new Vector(0,0,0);
         int i;
         Object object = objects.get(intersection.getI());
-        for(i=0; i<20; i++){
+        for(i=0; i<15; i++){
             int j = this.getRandomLightSource();
             Object lightSource = lightSources.get(j);
             Ray shadowRay = new Ray(intersection.getPosition(),lightSource.getRandomPoint());
@@ -202,39 +220,78 @@ public class Scene {
     public Vector whittedRayTrace(Ray ray){
         Photon intersection = ray.getFirstPhoton();
         Vector sum=new Vector(0,0,0);
-        double u1 = Math.random();
         if (objects.get(intersection.getI()).getRadiance()==0){
-            double azimuth = 2*Math.PI*u1/probability;
-            if(azimuth<2*Math.PI){
-                Object object = objects.get(intersection.getI());
-                double u2 = Math.random();
-                double elevation = Math.acos(Math.sqrt(u2));
-                Vector objectNormal = object.getNormal(intersection.getPosition());
-                Direction reflectionDirection = new Direction(elevation,azimuth,1,objectNormal);
-                //if(ray.getDirectionVector().angleTo(objectNormal)<(Math.PI/2)){ objectNormal=objectNormal.invert(); }
-                //Direction reflectionDirection = new Direction(localDirection.getCartesian(), objectNormal);
-                Ray reflection;
-                if(Math.abs(ray.getDirectionVector().angleTo(objectNormal))<(Math.PI/2)){
-                    reflection= new Ray(intersection.getPosition(), intersection.getPosition().add(reflectionDirection.getAbsoluteCartesian().invert()));
-                }
-                else{
-                    reflection= new Ray(intersection.getPosition(), intersection.getPosition().add(reflectionDirection.getAbsoluteCartesian()));
-                }
-/*                System.out.print("Incl: "+localDirection.getInclination()+" Azim: "+localDirection.getAzimuth());
-            localDirection.getCartesian().printVector(" Local Cartesian-Vec: ");
-            objectNormal.printVector("Object-Normal: ");
-            System.out.print("Incl: "+reflectionDirection.getInclination()+" Azim: "+reflectionDirection.getAzimuth());
-            reflectionDirection.getCartesian().printVector(" Reflection Cartesian-Vec: ");
-            reflection.getStart().printVector("Start: ");
-            reflection.getEnd().printVector("End: ");*/
-                traceRay(reflection,object);
-                if(reflection.getFirstPhoton()!=null){
-                    Vector brdf = object.getReflection().brdf(intersection.getPosition(),reflectionDirection,new Direction(ray.getDirectionVector(),objectNormal).invert());
-                    sum=whittedRayTrace(reflection).mult(brdf).scalarMult(Math.PI/probability);
+            Object object = objects.get(intersection.getI());
+
+
+            double n1 = 1.0;
+            Vector objectNormal = object.getNormal(intersection.getPosition());
+            if(Math.abs(ray.getDirectionVector().angleTo(objectNormal))<(Math.PI/2)){
+                //System.out.println("inverted");
+                n1=2.25;
+                objectNormal=objectNormal.invert();
+            }
+
+            Reflection reflectionModel = object.getReflection();
+            if(reflectionModel instanceof Specular){
+                Specular specularReflection = (Specular) reflectionModel;
+                Vector I = ray.getDirectionVector().unitVector();
+                Direction incoming = new Direction(I,objectNormal);
+                double inclinationIncoming = incoming.getInclination();
+                Direction outgoing = new Direction(inclinationIncoming,Math.PI+incoming.getAzimuth(),1,objectNormal);
+                Ray reflection = new Ray(intersection.getPosition(),intersection.getPosition().add(outgoing.getAbsoluteCartesian()));
+                this.traceRay(reflection,object);
+                double n2 = specularReflection.getSpecularIndex();
+                Vector N = objectNormal.unitVector();
+                double sqrt = 1 - ((n1 / n2) * (n1 / n2) * (1 - (N.dotProduct(I) * (N.dotProduct(I)))));
+                if(sqrt<=0){ sum = whittedRayTrace(reflection); }
+                else {
+
+                    Vector refractedDirection = I.scalarMult(n1/ n2).add(N.scalarMult(-(n1/ n2)*N.dotProduct(I)-Math.sqrt(sqrt)));
+
+                    Ray refraction = new Ray(intersection.getPosition(), intersection.getPosition().add(refractedDirection));
+                    this.traceRay(refraction,object);
+
+                    double rs = Math.pow((n1 * Math.cos(inclinationIncoming) - n2* Math.sqrt(1-Math.pow((n1/n2)*Math.sin(inclinationIncoming),2)))/(n1 * Math.cos(inclinationIncoming) + n2* Math.sqrt(1-Math.pow((n1/n2)*Math.sin(inclinationIncoming),2))),2);
+                    double rp = Math.pow((n1 *Math.sqrt(1-Math.pow((n1/n2)*Math.sin(inclinationIncoming),2)) - 2* Math.cos(inclinationIncoming) )/(n1 *Math.sqrt(1-Math.pow((n1/n2)*Math.sin(inclinationIncoming),2)) + 2* Math.cos(inclinationIncoming) ),2);
+                    double r = (rs+rp)/2.0;
+                    sum = (whittedRayTrace(reflection).scalarMult(r).add(whittedRayTrace(refraction).scalarMult(1.0-r)));
+
                 }
             }
-            else{ return objects.get(intersection.getI()).getSelfRadiance(); }
+
+            else{
+                double u1 = Math.random();
+                double azimuth = 2*Math.PI*u1/probability;
+                if(azimuth<2*Math.PI){
+                    double u2 = Math.random();
+                    double elevation = Math.acos(Math.sqrt(u2));
+                    Direction reflectionDirection = new Direction(elevation,azimuth,1,objectNormal);
+                    Ray reflection;
+
+                    reflection= new Ray(intersection.getPosition(), intersection.getPosition().add(reflectionDirection.getAbsoluteCartesian()));
+
+                    traceRay(reflection,object);
+
+                    if(reflection.getFirstPhoton()==null){
+                        System.out.println(reflection.getFirstPhoton()!=null);
+                        System.out.println("Angle to normal: "+Math.abs(ray.getDirectionVector().angleTo(objectNormal)));
+                        objectNormal.printVector("Object-Normal: ");
+                        System.out.print("Incl: "+reflectionDirection.getInclination()+" Azim: "+reflectionDirection.getAzimuth());
+                        reflectionDirection.getAbsoluteCartesian().printVector(" Reflection Absolute-Vec: ");
+                        reflectionDirection.getCartesian().printVector(" Reflection Local-Vec: ");
+                        reflection.getStart().printVector("Start: ");
+                        reflection.getEnd().printVector("End: ");
+                    }
+                    else{
+                        Vector brdf = reflectionModel.brdf(intersection.getPosition(),reflectionDirection,new Direction(ray.getDirectionVector().invert(),objectNormal));
+                        sum=whittedRayTrace(reflection).mult(brdf).scalarMult(Math.PI/probability);
+
+                    }
+                }
+            }
         }
+        else{ return objects.get(intersection.getI()).getSelfRadiance(); }
         return sum.add(directLight(ray));
     }
 
@@ -250,7 +307,7 @@ public class Scene {
                 if( !mc && photon.getFlux()>=0){
                     //double d = photon.getPosition().sub(intersection.getPosition()).length();
                     //double wp=Math.max(0,1-d/(filterConstant*searchRadius));
-                    Vector brdf = object.getReflection().brdf(intersection.getPosition(),photon.getDirection().invert(),new Direction(ray.getDirectionVector(),object.getNormal(intersection.getPosition())));
+                    Vector brdf = object.getReflection().brdf(intersection.getPosition(),photon.getDirection(),new Direction(ray.getDirectionVector(),object.getNormal(intersection.getPosition())));
                     //sum+=brdf*photon.getFlux()*wp/(Math.PI*searchRadius*searchRadius*(1- 2/ (3*filterConstant)));
                     sum=sum.add(brdf.scalarMult(photon.getFlux()/(Math.PI*searchRadius*searchRadius)));
                 }

@@ -21,12 +21,12 @@ public class Main {
         int numberOfPhotons = 10000;
 
         // Define resolution of final image
-        int resX = 1000;
-        int resY = 1000;
+        int resX = 400;
+        int resY = 400;
 
         Scene scene = new Scene();
         
-        double standard = 0.75;
+        double standard = 0.7;
         double high = 0.9;
         double low = 0.5;
 
@@ -55,18 +55,24 @@ public class Main {
         // Tetrahedron
         scene.addTetrahedron(0, new ColorDbl("sky"), high,5, 5, -5, 6, 5, -5, 5.5, 4.5, -3.5, 5.5, 4, -5);
 
+        // Mirror Triangle
+        //scene.addSpecularTriangle(new ColorDbl("white"),7,0,-1,8,0.5,-3.5,9,-3.5,-3.5);
+
+        // Transparent Sphere
+        scene.addSpecularSphere(new ColorDbl("white"),6,2,-3,2);
+
         //Light Tetrahedron -Daft Punk Alike-
-        /*scene.addTriangle(20, new ColorDbl("white"),standard,7,0,2,5.5,1.5,2,5.5,-1.5,2);
-        scene.addTriangle(20, new ColorDbl("green"),standard,7,0,2,5.5,-1.5,2,6.25,0,3.5);
-        scene.addTriangle(20, new ColorDbl("red"),standard,7,0,2,6.25,0,3.5,5.5,1.5,2);
-        scene.addTriangle(20, new ColorDbl("blue"),standard,6.25,0,3.5,5.5,-1.5,2,5.5,1.5,2);
+        /*scene.addTriangle(2000, new ColorDbl("white"),standard,7,0,2,5.5,1.5,2,5.5,-1.5,2);
+        scene.addTriangle(1500, new ColorDbl("green"),standard,7,0,2,5.5,-1.5,2,6.25,0,3.5);
+        scene.addTriangle(1500, new ColorDbl("red"),standard,7,0,2,6.25,0,3.5,5.5,1.5,2);
+        scene.addTriangle(1500, new ColorDbl("blue"),standard,6.25,0,3.5,5.5,-1.5,2,5.5,1.5,2);
 */
 
         // Light
         //scene.addSphere(16, new ColorDbl("white"),standard,5,0,5,0.7);
-        //scene.addTriangle(1000, new ColorDbl("white"),standard,3,0,4.99,4.5,-1.5,4.99,4.5,1.5,4.99);
+        scene.addTriangle(1800, new ColorDbl("white"),standard,3,0,4.99,4.5,-1.5,4.99,4.5,1.5,4.99);
         //scene.addTriangle(1000, new ColorDbl("white"),standard,6,0,-4.99,7.5,-1.5,-4.99,7.5,1.5,-4.99);
-        scene.addTriangle(2000, new ColorDbl("white"),standard, -1.05,0,-1,-1.05,1.5,1.5,-1.05,-1.5,1.5);
+        //scene.addTriangle(2000, new ColorDbl("white"),standard, -1.05,0,-1,-1.05,1.5,1.5,-1.05,-1.5,1.5);
         //scene.addTriangle(15, new ColorDbl("white"),standard, 8,-1,2,8,0.5,3.5,8,-2.5,3.5);
         // 1st Pass: Create Photon Map
         //scene.constructPhotonMap(numberOfPhotons);
