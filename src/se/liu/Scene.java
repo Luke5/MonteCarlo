@@ -191,7 +191,7 @@ public class Scene {
         Vector sum = new Vector(0,0,0);
         int i;
         Object object = objects.get(intersection.getI());
-        for(i=0; i<15; i++){
+        for(i=0; i<20; i++){
             int j = this.getRandomLightSource();
             Object lightSource = lightSources.get(j);
             Ray shadowRay = new Ray(intersection.getPosition(),lightSource.getRandomPoint());
@@ -233,20 +233,24 @@ public class Scene {
             }
 
             Reflection reflectionModel = object.getReflection();
+
+            // Specular Reflection
             if(reflectionModel instanceof Specular){
                 Specular specularReflection = (Specular) reflectionModel;
-                Vector I = ray.getDirectionVector().unitVector();
+                Vector I = ray.getDirectionVector().invert().unitVector();
                 Direction incoming = new Direction(I,objectNormal);
                 double inclinationIncoming = incoming.getInclination();
                 Direction outgoing = new Direction(inclinationIncoming,Math.PI+incoming.getAzimuth(),1,objectNormal);
                 Ray reflection = new Ray(intersection.getPosition(),intersection.getPosition().add(outgoing.getAbsoluteCartesian()));
                 this.traceRay(reflection,object);
                 double n2 = specularReflection.getSpecularIndex();
-                Vector N = objectNormal.unitVector();
-                double sqrt = 1 - ((n1 / n2) * (n1 / n2) * (1 - (N.dotProduct(I) * (N.dotProduct(I)))));
-                if(sqrt<=0){ sum = whittedRayTrace(reflection); }
-                else {
 
+                if(inclinationIncoming>Math.asin(n2/n1)){ sum = whittedRayTrace(reflection); }
+                else {
+                    Vector N = objectNormal.unitVector();
+                    double sqrt = 1.0 - ((n1 / n2) * (n1 / n2) * (1 - Math.pow(N.dotProduct(I),2)));
+                    if(sqrt<=0){
+                        System.out.println("CAUTION!"+n1+" "+n2+" "+sqrt);}
                     Vector refractedDirection = I.scalarMult(n1/ n2).add(N.scalarMult(-(n1/ n2)*N.dotProduct(I)-Math.sqrt(sqrt)));
 
                     Ray refraction = new Ray(intersection.getPosition(), intersection.getPosition().add(refractedDirection));
@@ -260,6 +264,7 @@ public class Scene {
                 }
             }
 
+            // Diffuse Reflection (Oren-Nayar or Lambertian
             else{
                 double u1 = Math.random();
                 double azimuth = 2*Math.PI*u1/probability;
