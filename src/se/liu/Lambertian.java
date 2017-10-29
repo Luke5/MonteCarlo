@@ -13,6 +13,6 @@ public class Lambertian implements Reflection {
 
     @Override
     public Vector brdf(Vector x, Direction win, Direction wout) {
-        return new Vector(reflectionCoefficientR/Math.PI,reflectionCoefficientG/Math.PI,reflectionCoefficientB/Math.PI);
+        return new Vector(reflectionCoefficientR / Math.PI, reflectionCoefficientG / Math.PI, reflectionCoefficientB / Math.PI);
     }
 }

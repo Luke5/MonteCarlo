@@ -13,7 +13,7 @@ public class Triangle extends Object {
         this.setReflection(reflection);
     }
 
-    Triangle(ColorDbl color, Reflection reflection,  double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
+    Triangle(ColorDbl color, Reflection reflection, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
         this.setColor(color);
         this.setReflection(reflection);
         Vertex v1 = new Vertex(x1, y1, z1);
@@ -26,11 +26,13 @@ public class Triangle extends Object {
     }
 
     @Override
-    public Vector getRandomPoint(){
-        while(true){
+    public Vector getRandomPoint() {
+        while (true) {
             double u = Math.random();
             double v = Math.random();
-            if(u+v<=1){ return this.vertices[0].scalarMult(1-u-v).add(this.vertices[1].scalarMult(u)).add(this.vertices[2].scalarMult(v)); }
+            if (u + v <= 1) {
+                return this.vertices[0].scalarMult(1 - u - v).add(this.vertices[1].scalarMult(u)).add(this.vertices[2].scalarMult(v));
+            }
         }
     }
 
@@ -66,6 +68,6 @@ public class Triangle extends Object {
 
     @Override
     public double getArea() {
-        return 0.5*this.normal.length();
+        return 0.5 * this.normal.length();
     }
 }

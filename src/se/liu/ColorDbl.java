@@ -13,9 +13,9 @@ public class ColorDbl {
     ColorDbl(String colorName) {
         switch (colorName) {
             case "random":
-                this.r = Math.random()*255;
-                this.g = Math.random()*255;
-                this.b = Math.random()*255;
+                this.r = Math.random() * 255;
+                this.g = Math.random() * 255;
+                this.b = Math.random() * 255;
             case "white":
                 this.r = 255;
                 this.g = 255;
@@ -84,12 +84,16 @@ public class ColorDbl {
         }
     }
 
-    double getR() {
+    public double getR() {
         return r;
     }
 
-    public void setR(double r) {
-        this.r = r;
+    public double getG() {
+        return g;
+    }
+
+    public double getB() {
+        return b;
     }
 
     private int[] toRGBArray() {
@@ -109,21 +113,5 @@ public class ColorDbl {
                 | (rgbArray[1] << 8 & 0x0000ff00)
                 | (rgbArray[2] & 0x000000ff);
 
-    }
-
-    public double getG() {
-        return g;
-    }
-
-    public void setG(double g) {
-        this.g = g;
-    }
-
-    public double getB() {
-        return b;
-    }
-
-    public void setB(double b) {
-        this.b = b;
     }
 }

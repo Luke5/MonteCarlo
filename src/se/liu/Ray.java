@@ -19,23 +19,23 @@ public class Ray {
     }
 
     void setFirstIntersection(int i, double t, Vector normal) {
-        firstPhoton =new Photon(this,i,t,normal);
+        firstPhoton = new Photon(this, i, t, normal);
     }
 
     ArrayList<Photon> getPhotons() {
         return photons;
     }
 
-    Vector getPoint(double t){
+    Vector getPoint(double t) {
         return start.add(end.sub(start).unitVector().scalarMult(t));
     }
 
-    double getLength(){
+    double getLength() {
         return end.sub(start).length();
     }
 
     void addIntersection(int i, double t, Vector normal) {
-        this.photons.add(new Photon(this,i,t,normal));
+        this.photons.add(new Photon(this, i, t, normal));
     }
 
     ColorDbl getColor() {
@@ -46,20 +46,12 @@ public class Ray {
         this.color = color;
     }
 
-    Vector getDirectionVector(){
+    Vector getDirectionVector() {
         return end.sub(start);
     }
 
     Vector getStart() {
         return start;
-    }
-
-    public void setPhotons(ArrayList<Photon> photons) {
-        this.photons = photons;
-    }
-
-    public void setStart(Vertex start) {
-        this.start = start;
     }
 
     public Vector getEnd() {

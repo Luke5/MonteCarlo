@@ -12,10 +12,6 @@ public class Pixel {
         this.position = position;
     }
 
-    public Ray getRay(int i) {
-        return rays.get(i);
-    }
-
     void addRay(Ray ray) {
         rays.add(ray);
     }
@@ -24,12 +20,8 @@ public class Pixel {
         return color;
     }
 
-    public void clearRays(){
+    public void clearRays() {
         rays.clear();
-    }
-
-    public void setColor(ColorDbl color) {
-        this.color = color;
     }
 
     void calculateColor() {

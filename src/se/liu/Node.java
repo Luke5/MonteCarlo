@@ -3,8 +3,8 @@ package se.liu;
 import java.util.ArrayList;
 
 class Node {
-    private double xmin,xmax,ymin,ymax,zmin,zmax;
-    private Node n1,n2,n3,n4,n5,n6,n7,n8;
+    private double xmin, xmax, ymin, ymax, zmin, zmax;
+    private Node n1, n2, n3, n4, n5, n6, n7, n8;
     private ArrayList<Photon> photons;
 
     Node(double r0, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, ArrayList<Photon> photons) {
@@ -15,10 +15,10 @@ class Node {
         this.ymax = ymax;
         this.zmin = zmin;
         this.zmax = zmax;
-        if(photons.size()> n0 && Math.min((xmax-xmin),Math.min((ymax-ymin),(zmax-zmin)))>9*r0){
-            double xmed=xmin+(xmax-xmin)/2;
-            double ymed=ymin+(ymax-ymin)/2;
-            double zmed=zmin+(zmax-zmin)/2;
+        if (photons.size() > n0 && Math.min((xmax - xmin), Math.min((ymax - ymin), (zmax - zmin))) > 9 * r0) {
+            double xmed = xmin + (xmax - xmin) / 2;
+            double ymed = ymin + (ymax - ymin) / 2;
+            double zmed = zmin + (zmax - zmin) / 2;
             ArrayList<Photon> p1 = new ArrayList<>();
             ArrayList<Photon> p2 = new ArrayList<>();
             ArrayList<Photon> p3 = new ArrayList<>();
@@ -27,73 +27,90 @@ class Node {
             ArrayList<Photon> p6 = new ArrayList<>();
             ArrayList<Photon> p7 = new ArrayList<>();
             ArrayList<Photon> p8 = new ArrayList<>();
-            for (Photon photon:photons) {
-                if(photon.getPosition().getX()<xmed){
-                    if(photon.getPosition().getY()<ymed){
-                        if(photon.getPosition().getZ()<zmed){ p1.add(photon); }
-                        else{ p2.add(photon); }
+            for (Photon photon : photons) {
+                if (photon.getPosition().getX() < xmed) {
+                    if (photon.getPosition().getY() < ymed) {
+                        if (photon.getPosition().getZ() < zmed) {
+                            p1.add(photon);
+                        } else {
+                            p2.add(photon);
+                        }
+                    } else {
+                        if (photon.getPosition().getZ() < zmed) {
+                            p3.add(photon);
+                        } else {
+                            p4.add(photon);
+                        }
                     }
-                    else{
-                        if(photon.getPosition().getZ()<zmed){ p3.add(photon); }
-                        else{ p4.add(photon); }
-                    }
-                }
-                else{
-                    if(photon.getPosition().getY()<ymed){
-                        if(photon.getPosition().getZ()<zmed){ p5.add(photon); }
-                        else{ p6.add(photon); }
-                    }
-                    else{
-                        if(photon.getPosition().getZ()<zmed){ p7.add(photon); }
-                        else{ p8.add(photon); }
+                } else {
+                    if (photon.getPosition().getY() < ymed) {
+                        if (photon.getPosition().getZ() < zmed) {
+                            p5.add(photon);
+                        } else {
+                            p6.add(photon);
+                        }
+                    } else {
+                        if (photon.getPosition().getZ() < zmed) {
+                            p7.add(photon);
+                        } else {
+                            p8.add(photon);
+                        }
                     }
                 }
             }
-            n1= new Node(r0,xmin,xmed,ymin,ymed,zmin,zmed,p1);
-            n2= new Node(r0,xmin,xmed,ymin,ymed,zmed,zmax,p2);
-            n3= new Node(r0,xmin,xmed,ymed,ymax,zmin,zmed,p3);
-            n4= new Node(r0,xmin,xmed,ymed,ymax,zmed,zmax,p4);
-            n5= new Node(r0,xmed,xmax,ymin,ymed,zmin,zmed,p5);
-            n6= new Node(r0,xmed,xmax,ymin,ymed,zmed,zmax,p6);
-            n7= new Node(r0,xmed,xmax,ymed,ymax,zmin,zmed,p7);
-            n8= new Node(r0,xmed,xmax,ymed,ymax,zmed,zmax,p8);
-        }
-        else{
+            n1 = new Node(r0, xmin, xmed, ymin, ymed, zmin, zmed, p1);
+            n2 = new Node(r0, xmin, xmed, ymin, ymed, zmed, zmax, p2);
+            n3 = new Node(r0, xmin, xmed, ymed, ymax, zmin, zmed, p3);
+            n4 = new Node(r0, xmin, xmed, ymed, ymax, zmed, zmax, p4);
+            n5 = new Node(r0, xmed, xmax, ymin, ymed, zmin, zmed, p5);
+            n6 = new Node(r0, xmed, xmax, ymin, ymed, zmed, zmax, p6);
+            n7 = new Node(r0, xmed, xmax, ymed, ymax, zmin, zmed, p7);
+            n8 = new Node(r0, xmed, xmax, ymed, ymax, zmed, zmax, p8);
+        } else {
             this.photons = photons;
         }
     }
 
-    ArrayList<Photon> getPhotons(Vector vector){ return this.getPhotons(vector.getX(),vector.getY(),vector.getZ()); }
+    ArrayList<Photon> getPhotons(Vector vector) {
+        return this.getPhotons(vector.getX(), vector.getY(), vector.getZ());
+    }
 
     ArrayList<Photon> getPhotons(double x, double y, double z) {
-        if(photons!=null){
+        if (photons != null) {
             return photons;
-        }
-        else{
-            double xmed=xmin+(xmax-xmin)/2;
-            double ymed=ymin+(ymax-ymin)/2;
-            double zmed=zmin+(zmax-zmin)/2;
-            if(x<xmed){
-                if(y<ymed){
-                    if(z<zmed){ return n1.getPhotons(x,y,z); }
-                    else{ return n2.getPhotons(x,y,z); }
+        } else {
+            double xmed = xmin + (xmax - xmin) / 2;
+            double ymed = ymin + (ymax - ymin) / 2;
+            double zmed = zmin + (zmax - zmin) / 2;
+            if (x < xmed) {
+                if (y < ymed) {
+                    if (z < zmed) {
+                        return n1.getPhotons(x, y, z);
+                    } else {
+                        return n2.getPhotons(x, y, z);
+                    }
+                } else {
+                    if (z < zmed) {
+                        return n3.getPhotons(x, y, z);
+                    } else {
+                        return n4.getPhotons(x, y, z);
+                    }
                 }
-                else{
-                    if(z<zmed){ return n3.getPhotons(x,y,z); }
-                    else{ return n4.getPhotons(x,y,z); }
+            } else {
+                if (y < ymed) {
+                    if (z < zmed) {
+                        return n5.getPhotons(x, y, z);
+                    } else {
+                        return n6.getPhotons(x, y, z);
+                    }
+                } else {
+                    if (z < zmed) {
+                        return n7.getPhotons(x, y, z);
+                    } else {
+                        return n8.getPhotons(x, y, z);
+                    }
                 }
             }
-            else{
-                if(y<ymed){
-                    if(z<zmed){ return n5.getPhotons(x,y,z); }
-                    else{ return n6.getPhotons(x,y,z); }
-                }
-                else{
-                    if(z<zmed){ return n7.getPhotons(x,y,z); }
-                    else{
-                        return n8.getPhotons(x,y,z); }
-                }
-            }            
         }
     }
 }

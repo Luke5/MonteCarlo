@@ -7,6 +7,14 @@ public class Photon {
     private Direction direction;
     private double flux = -1;
 
+    public Photon(Ray ray, int i, double t, Vector normal) {
+        position = ray.getPoint(t);
+        this.direction = new Direction(ray.getDirectionVector(), normal);
+
+        this.i = i;
+        this.t = t;
+    }
+
     public double getFlux() {
         return flux;
     }
@@ -35,19 +43,7 @@ public class Photon {
         return position;
     }
 
-    public void setPosition(Vector position) {
-        this.position = position;
-    }
-
     public Direction getDirection() {
         return direction;
-    }
-
-    public Photon(Ray ray, int i, double t, Vector normal) {
-        position = ray.getPoint(t);
-        this.direction=new Direction(ray.getDirectionVector(),normal);
-
-        this.i = i;
-        this.t = t;
     }
 }
