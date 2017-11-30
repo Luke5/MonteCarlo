@@ -12,13 +12,15 @@
 
 \title{Monte Carlo Raytracing}
 
-\author{ Lukas Haack and Tobias Pettersson}
+\author{Lukas Haack and Tobias Pettersson}
 
 \maketitle
 
 
 
 \section{Introduction}
+The first algorithm that handled ray tracing was implemented by Arthur Appel in 1968 \cite{Arthur Appel}. This method casts rays from each pixel in the camera/eye screen and exchanging each pixel with the first pixel each ray intersects with \cite{Basic Raytracing}. 
+
 Raytracing is a useful tool in computer graphics. By calculating and simulating how rays of light interfere and interact gives a realistic result. When a ray is shot through the scene four things can happen to it absorption, reflection, refraction or fluorescence.
 If the ray is absorbed it hits the surface and no further calculations are needed. If the ray is reflected it's mirrored in the surfaces normal and continues to be calculated. If the ray is refracted on a transparent surface the ray changes direction on impact with the surface and continues to be calculated. If the ray encounters fluorescence it is absorbed by an object with chemical properties that in turn starts emitting light.
 
@@ -30,26 +32,69 @@ The important part of the calculation is to determine which rays that fall upon 
 Transparent object such as glass or a water surface can't be shown as an object with a texture since they have no colour. 
 These objects visibility is determined by how light reflects and refracts the objects. By using raytracing these objects can be created with a realistic result.
 
-\begin{figure}[h!]
-\includegraphics[width=0.5\textwidth]{Glasses_800_edit.png}
-\caption{An image rendered with raytracing}
-\end{figure}
+%\begin{figure}[h!]
+%\includegraphics[width=0.5\textwidth]{Glasses_800_edit.png}
+%\caption{An image rendered with raytracing}
+%\end{figure}
 
 Raytracing calculations can take a long time to calculate and thus they're only suitable for creating single images and not for continuously rendered video games. 
-This report covers the implementation and result of a Monte Carlo ray tracer.
-This report discusses methods presented in the report Global Illumination using Photon Maps by Henrik Wann Jensen
+\\
+This report covers the implementation and result of a Monte Carlo ray tracer that can handle transparent objects, Oren-Nayar reflection using photon mapping.
+\\
+The Monte Carlo method uses randomization to obtain a numerical result. 
+In Monte Carlo ray tracing the program emits a large number of randomized rays. The result converges to the realistic result as more rays are emitted\cite{Monte Carlo Method}.
+
+The method integrates over all the illuminance that intersects on a certain point on an object\cite{Path tracing}.
+
+Transparent objects both reflect and refract rays and new rays need to be calculated as seen in figure 3.
+\begin{figure}[h!]
+\includegraphics[width=0.5\textwidth]{transparent-yta.png}
+\caption{A transparent surface}
+\end{figure}
+
+Oren-Nayar reflection is built upon Lambertian reflection by dividing the surface into V-shaped microfacets that in turn are Lambertian reflectors. This method works for diffuse surfaces to make a diffuse reflection. The difference between Oren-Nayar reflection and Lambertian reflection is seen in figure 4.
+\begin{figure}[h!]
+\includegraphics[width=0.5\textwidth]{600px-Oren-nayar-vase2.jpg}
+\caption{Lambertian and Oren-Nayar reflection}
+\end{figure}
+\\
+\\
+\\
+
+
+
+
+
+
+
+
 \section{Background}
 
 The first algorithm that handled ray tracing was implemented by Arthur Appel in 1968 \cite{Arthur Appel}. This method casts rays from each pixel in the camera/eye screen and exchanging each pixel with the first pixel each ray intersects with \cite{Basic Raytracing}. 
 
-Basic ray tracing methods use one ray per pixel, one shadow ray from every point of light and one reflection ray, in some cases a refraction ray is added, for all interfering surfaces.
+Basic ray tracing methods use one ray per pixel, one shadow ray from every point of light and one reflection ray, in some cases a refraction ray is added, for all interfering surfaces.\\
 
 
-The Monte Carlo method uses randomization to obtain a numerical result. 
-In Monte Carlo ray tracing the program emits a large number of randomized rays. The result converges to the realistic result as more rays are emitted\cite{Monte Carlo Method}.
+
+Three steps are required for a global illumination using raytracing:
+
+1. Aquiring data and measuring
+	Objects dimensions and position in the scene are defined. Properties for the objects like transparency, reflectivity, colour and the light sources of the scenes are defined as well.
+    
+2. Light transport 
+	The light distribution of the scene is calculated with the information of the objects and the light sources and the calculation gives radiometric values.
+    
+3. Visual display
+	The radiometric values are translated to pixel colours so an image can be shown on a screen.
+\\
+
+A ray has three basic components, its starting point, its ending point and its radiance.
+The starting point of the ray is its light source, the ending point is calculated by the algorithms that calculate the light's reflection and the radiance depends on the light source's intensity. 
+
+The radiance is the flux per projected area per unit solid angle d$\omega$. The physical unit for radiance is Watts/Steradian/m$^2$.
 
 
-The method integrates over all the illuminance that intersects on a certain point on an object\cite{Path tracing}.  
+
 \section{Result}
 
 The first object of the project was to create a hexagonal room with different coloured walls. In this room two cameras were installed to view the room. 
