@@ -2,10 +2,12 @@
 \IEEEoverridecommandlockouts
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 \usepackage{cite}
+\usepackage[document]{ragged2e}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
+\usepackage{amsmath}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
@@ -58,23 +60,11 @@ Oren-Nayar reflection is built upon Lambertian reflection by dividing the surfac
 \caption{Lambertian and Oren-Nayar reflection}
 \end{figure}
 \\
-\\
-\\
-
-
-
-
-
-
-
-
 \section{Background}
 
 The first algorithm that handled ray tracing was implemented by Arthur Appel in 1968 \cite{Arthur Appel}. This method casts rays from each pixel in the camera/eye screen and exchanging each pixel with the first pixel each ray intersects with \cite{Basic Raytracing}. 
 
 Basic ray tracing methods use one ray per pixel, one shadow ray from every point of light and one reflection ray, in some cases a refraction ray is added, for all interfering surfaces.\\
-
-
 
 Three steps are required for a global illumination using raytracing:
 
@@ -91,8 +81,21 @@ Three steps are required for a global illumination using raytracing:
 A ray has three basic components, its starting point, its ending point and its radiance.
 The starting point of the ray is its light source, the ending point is calculated by the algorithms that calculate the light's reflection and the radiance depends on the light source's intensity. 
 
-The radiance is the flux per projected area per unit solid angle d$\omega$. The physical unit for radiance is Watts/Steradian/m$^2$.
+The radiance is the flux per projected area per unit solid angle d$\omega$. The physical unit for radiance is Watts/Steradian/m$^2$.\\ 
 
+
+The rendering equation is seen in eq. 1. 
+\begin{equation} \label{eq:solve}
+$$L(x$\leftarrow$ $\omega$)= Le(x$\leftarrow$ $\omega$)+
+\\ $\int_{\omega 1}$ f*(x1, -$\omega$, $\omega$1)
+L(x1$\leftarrow$ $\omega$1)d$\omega$1
+$$
+\end{equation}
+
+This equation takes three different radiances into consideration:\\
+The radiance from the $\omega$ direction that falls on to x.\\
+The radiance from the $\omega$ direction that falls on to x that is emitted from a light source.\\
+And the radiance that comes from the direction $\omega$1 on to x1.\\
 
 
 \section{Result}
