@@ -3,12 +3,13 @@ package se.liu;
 import java.util.ArrayList;
 
 class Node {
-    private double xmin, xmax, ymin, ymax, zmin, zmax;
+    private double xmin, xmax, ymin, ymax, zmin, zmax, r0;
     private Node n1, n2, n3, n4, n5, n6, n7, n8;
     private ArrayList<Photon> photons;
 
     Node(double r0, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, ArrayList<Photon> photons) {
-        int n0 = 200;
+        this.r0=r0;
+        int n0 = 500;
         this.xmin = xmin;
         this.xmax = xmax;
         this.ymin = ymin;
@@ -75,41 +76,79 @@ class Node {
         return this.getPhotons(vector.getX(), vector.getY(), vector.getZ());
     }
 
-    ArrayList<Photon> getPhotons(double x, double y, double z) {
-        if (photons != null) {
+    public boolean isLeaf(){
+        return (photons != null);
+    }
+
+    private ArrayList<Photon> getAllPhotons(){
+        if (this.isLeaf()) {
             return photons;
         } else {
+            ArrayList<Photon> all = n1.getAllPhotons();
+            all.addAll(n2.getAllPhotons());
+            all.addAll(n3.getAllPhotons());
+            all.addAll(n4.getAllPhotons());
+            all.addAll(n5.getAllPhotons());
+            all.addAll(n6.getAllPhotons());
+            all.addAll(n7.getAllPhotons());
+            all.addAll(n8.getAllPhotons());
+            return all;
+        }
+        
+    }
+    
+    ArrayList<Photon> getPhotons(double x, double y, double z) {
+        if (this.isLeaf()) {
+            return photons;
+        }
+        else {
             double xmed = xmin + (xmax - xmin) / 2;
             double ymed = ymin + (ymax - ymin) / 2;
             double zmed = zmin + (zmax - zmin) / 2;
-            if (x < xmed) {
-                if (y < ymed) {
-                    if (z < zmed) {
+            if (x < xmed && Math.abs(xmin-x)>=r0 && Math.abs(xmed-x)>=r0 ) {
+                if (y < ymed && Math.abs(ymin-y)>=r0 && Math.abs(ymed-y)>=r0 ) {
+                    if (z < zmed && Math.abs(zmin-z)>=r0 && Math.abs(zmed-z)>=r0 ) {
                         return n1.getPhotons(x, y, z);
-                    } else {
+                    }
+                    if (z > zmed && Math.abs(zmax-z)>=r0 && Math.abs(zmed-z)>=r0 ) {
                         return n2.getPhotons(x, y, z);
                     }
-                } else {
-                    if (z < zmed) {
+                }
+                if (y > ymed && Math.abs(ymax-y)>=r0 && Math.abs(ymed-y)>=r0 ) {
+                    if (z < zmed && Math.abs(zmin-z)>=r0 && Math.abs(zmed-z)>=r0 ){
                         return n3.getPhotons(x, y, z);
-                    } else {
+                    }
+                    if (z > zmed && Math.abs(zmax-z)>=r0 && Math.abs(zmed-z)>=r0 ) {
                         return n4.getPhotons(x, y, z);
                     }
                 }
-            } else {
-                if (y < ymed) {
-                    if (z < zmed) {
+            }
+            if (x > xmed && Math.abs(xmax-x)>=r0 && Math.abs(xmed-x)>=r0 ) {
+                if (y < ymed && Math.abs(ymin-y)>=r0 && Math.abs(ymed-y)>=r0 ) {
+                    if (z < zmed && Math.abs(zmin-z)>=r0 && Math.abs(zmed-z)>=r0 ) {
                         return n5.getPhotons(x, y, z);
-                    } else {
+                    }
+                    if (z > zmed && Math.abs(zmax-z)>=r0 && Math.abs(zmed-z)>=r0 ) {
                         return n6.getPhotons(x, y, z);
                     }
-                } else {
-                    if (z < zmed) {
+                }
+                if (y > ymed && Math.abs(ymax-y)>=r0 && Math.abs(ymed-y)>=r0 ) {
+                    if (z < zmed && Math.abs(zmin-z)>=r0 && Math.abs(zmed-z)>=r0 ){
                         return n7.getPhotons(x, y, z);
-                    } else {
+                    }
+                    if (z > zmed && Math.abs(zmax-z)>=r0 && Math.abs(zmed-z)>=r0 ) {
                         return n8.getPhotons(x, y, z);
                     }
+                    else{
+                        return new ArrayList<>();
+                    }
                 }
+                else{
+                    return new ArrayList<>();
+                }
+            }
+            else{
+                return new ArrayList<>();
             }
         }
     }

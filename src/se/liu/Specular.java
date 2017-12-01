@@ -2,7 +2,7 @@ package se.liu;
 
 public class Specular implements Reflection {
 
-    private double kd = 0.01;
+    private double kd = 0.025;
     private double reflectionCoefficientR;
     private double reflectionCoefficientG;
     private double reflectionCoefficientB;

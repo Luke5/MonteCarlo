@@ -23,22 +23,28 @@ public class Camera {
         System.out.println("Rendering Scene:");
         System.out.print("0%");
         int j = 0;
+        double pixelDistance = (pixelPlane[0][0].getPosition().getY()-pixelPlane[0][1].getPosition().getY())/4.0;
         for (Pixel[] pixelRow : pixelPlane) {
             for (Pixel pixel : pixelRow) {
-                for (int iteration = 0; iteration < 32; iteration++) {
+                for (int iteration1 = -1; iteration1 < 2; iteration1+=2) {
+                    for (int iteration2 = -1; iteration2 < 2; iteration2+=2) {
+                        Ray ray = new Ray(this.eyePoints[this.currentEyePoint], pixel.getPosition().add(new Vector(0,iteration1*pixelDistance,iteration2*pixelDistance)));
 
-                    Ray ray = new Ray(this.eyePoints[this.currentEyePoint], pixel.getPosition());
-                    scene.traceRay(ray, null);
-                    Vector l = scene.whittedRayTrace(ray, 0);
-                    if (ray.getFirstPhoton() != null) {
-                        Object object = scene.getObject(ray.getFirstPhoton().getI());
-                        double r = object.getColor().getR() * l.getX();
-                        double g = object.getColor().getG() * l.getY();
-                        double b = object.getColor().getB() * l.getZ();
-                        ray.setColor(new ColorDbl(r, g, b));
+                        scene.traceRay(ray, null);
+                        Vector l = scene.whittedRayTrace(ray,0);
 
+                        //Vector l = scene.estimateRadiance(ray);
+
+                        if (ray.getFirstPhoton() != null) {
+                            Object object = scene.getObject(ray.getFirstPhoton().getI());
+                            double r = object.getColor().getR() * l.getX();
+                            double g = object.getColor().getG() * l.getY();
+                            double b = object.getColor().getB() * l.getZ();
+                            ray.setColor(new ColorDbl(r, g, b));
+
+                        }
+                        pixel.addRay(ray);
                     }
-                    pixel.addRay(ray);
                 }
                 pixel.calculateColor();
                 pixel.clearRays();

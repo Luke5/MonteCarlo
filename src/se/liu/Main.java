@@ -11,13 +11,13 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         // Run jUnit Tests
-        System.out.println("Starting jUnit-Tests...");
-        junit.swingui.TestRunner.run(VectorTest.class);
+        //System.out.println("Starting jUnit-Tests...");
+        //junit.swingui.TestRunner.run(VectorTest.class);
 
         System.out.println("Starting process...");
 
         // Define the number of photons
-        int numberOfPhotons = 10000;
+        int numberOfPhotons = 5000000;
 
         // Define resolution of final image
         int resX = 1000;
@@ -67,9 +67,9 @@ public class Main {
 
         // Light
         //scene.addSphere(16, new ColorDbl("white"),standard,5,0,5,0.7);
-        scene.addTriangle(1000, new ColorDbl("white"), standard, 3, 0, 4.99, 4.5, -1.5, 4.99, 4.5, 1.5, 4.99);
-        scene.addTriangle(1000, new ColorDbl("white"), standard, 6, 0, -4.99, 7.5, -1.5, -4.99, 7.5, 1.5, -4.99);
-        //scene.addTriangle(1500, new ColorDbl("white"),standard, -1.05,0,-1,-1.05,1.5,1.5,-1.05,-1.5,1.5);
+        //scene.addTriangle(1000, new ColorDbl("white"), standard, 3, 0, 4.99, 4.5, -1.5, 4.99, 4.5, 1.5, 4.99);
+        //scene.addTriangle(1000, new ColorDbl("white"), standard, 6, 0, -4.99, 7.5, -1.5, -4.99, 7.5, 1.5, -4.99);
+        scene.addTriangle(1500, new ColorDbl("white"),standard, -1.05,0,-1,-1.05,1.5,1.5,-1.05,-1.5,1.5);
         //scene.addTriangle(15, new ColorDbl("white"),standard, 8,-1,2,8,0.5,3.5,8,-2.5,3.5);
 
         // 1st Pass: Create Photon Map

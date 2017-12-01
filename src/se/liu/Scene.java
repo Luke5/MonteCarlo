@@ -7,7 +7,7 @@ public class Scene {
     private ArrayList<Object> lightSources = new ArrayList<>();
     private ArrayList<Photon> photons = new ArrayList<>();
     private Node photonMap;
-    private double searchRadius = 0.005;
+    private double searchRadius = 0.025;
     private double probability = 0.7;
     private double filterConstant = 1;
     private double standartDeviation = 0.05;
@@ -129,8 +129,15 @@ public class Scene {
                 ArrayList<Photon> shadowPhotons = ray.getPhotons();
                 Photon photon = ray.getFirstPhoton();
                 if (photon != null) {
-                    shadowPhotons.remove(photon);
-                    photon.setFlux(lightSource.getFlux() / numberOfPhotons);
+                    Photon removeMe=null;
+                    for (Photon p: shadowPhotons) {
+                        if(p.getT()==photon.getT()){
+                            removeMe = p;
+                        }
+
+                    }
+                    shadowPhotons.remove(removeMe);
+                    photon.setFlux(lightSource.getFlux()/numberOfPhotons);
                     photons.add(photon);
                     photons.addAll(shadowPhotons);
                 }
@@ -240,9 +247,6 @@ public class Scene {
                 } else {
                     Vector N = objectNormal.unitVector();
                     double sqrt = 1.0 - ((n1 / n2) * (n1 / n2) * (1 - Math.pow(N.dotProduct(I), 2)));
-                    if (sqrt <= 0) {
-                        System.out.println("CAUTION!" + n1 + " " + n2 + " " + sqrt);
-                    }
                     Vector refractedDirection = I.scalarMult(n1 / n2).add(N.scalarMult(-(n1 / n2) * N.dotProduct(I) - Math.sqrt(sqrt)));
 
                     Ray refraction = new Ray(intersection.getPosition(), intersection.getPosition().add(refractedDirection));
@@ -256,7 +260,7 @@ public class Scene {
                 }
             }
 
-            // Diffuse Reflection (Oren-Nayar or Lambertian
+            // Diffuse Reflection (Oren-Nayar or Lambertian)
             else {
                 double u1 = Math.random();
                 double azimuth = 2 * Math.PI * u1 / probability;
@@ -299,15 +303,18 @@ public class Scene {
         Vector sum = new Vector(0, 0, 0);
         ArrayList<Photon> localPhotons = photonMap.getPhotons(intersection.getPosition());
         Object object = objects.get(intersection.getI());
-        if (localPhotons.size() > 10) {
+        if (localPhotons.size() > 10 && !(object.getReflection() instanceof Specular)) {
             for (Photon photon : localPhotons) {
                 if (!mc && photon.getFlux() >= 0) {
-                    //double d = photon.getPosition().sub(intersection.getPosition()).length();
-                    //double wp=Math.max(0,1-d/(filterConstant*searchRadius));
-                    Vector brdf = object.getReflection().brdf(intersection.getPosition(), photon.getDirection(), new Direction(ray.getDirectionVector(), object.getNormal(intersection.getPosition())));
-                    //sum+=brdf*photon.getFlux()*wp/(Math.PI*searchRadius*searchRadius*(1- 2/ (3*filterConstant)));
-                    sum = sum.add(brdf.scalarMult(photon.getFlux() / (Math.PI * searchRadius * searchRadius)));
-                } else {
+                    if(photon.getPosition().sub(intersection.getPosition()).length()<=searchRadius){
+                        //double d = photon.getPosition().sub(intersection.getPosition()).length();
+                        //double wp=Math.max(0,1-d/(filterConstant*searchRadius));
+                        Vector brdf = object.getReflection().brdf(intersection.getPosition(), photon.getDirection(), new Direction(ray.getDirectionVector(), object.getNormal(intersection.getPosition())));
+                        //sum = sum.add(brdf.scalarMult(photon.getFlux()*wp/(Math.PI*searchRadius*searchRadius*(1- 2/ (3*filterConstant)))));
+                        sum = sum.add(brdf.scalarMult(photon.getFlux() / (Math.PI * searchRadius * searchRadius)));
+                    }
+                }
+                else {
                     mc = true;
                 }
             }
@@ -316,10 +323,10 @@ public class Scene {
             mc = true;
         }
         if (mc) {
-            System.out.println("--MC");
+            //System.out.println("--MC");
             return whittedRayTrace(ray, 0);
         } else {
-            System.out.println("PM--");
+            //System.out.println("PM--");
         }
         return sum;
     }
