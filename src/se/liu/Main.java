@@ -11,8 +11,8 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         // Run jUnit Tests
-        //System.out.println("Starting jUnit-Tests...");
-        //junit.swingui.TestRunner.run(VectorTest.class);
+        System.out.println("Starting jUnit-Tests...");
+        junit.swingui.TestRunner.run(VectorTest.class);
 
         System.out.println("Starting process...");
 
@@ -73,7 +73,7 @@ public class Main {
         //scene.addTriangle(15, new ColorDbl("white"),standard, 8,-1,2,8,0.5,3.5,8,-2.5,3.5);
 
         // 1st Pass: Create Photon Map
-        //scene.constructPhotonMap(numberOfPhotons);
+        scene.constructPhotonMap(numberOfPhotons);
 
         // Initialize two Eye Positions
         Vertex[] eyePoints = new Vertex[2];

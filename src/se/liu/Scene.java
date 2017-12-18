@@ -303,7 +303,8 @@ public class Scene {
         Vector sum = new Vector(0, 0, 0);
         ArrayList<Photon> localPhotons = photonMap.getPhotons(intersection.getPosition());
         Object object = objects.get(intersection.getI());
-        if (localPhotons.size() > 10 && !(object.getReflection() instanceof Specular)) {
+        // remove the "false &&" to enable the photon mapping
+        if (false && localPhotons.size() > 10 && !(object.getReflection() instanceof Specular)) {
             for (Photon photon : localPhotons) {
                 if (!mc && photon.getFlux() >= 0) {
                     if(photon.getPosition().sub(intersection.getPosition()).length()<=searchRadius){

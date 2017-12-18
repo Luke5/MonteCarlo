@@ -31,9 +31,8 @@ public class Camera {
                         Ray ray = new Ray(this.eyePoints[this.currentEyePoint], pixel.getPosition().add(new Vector(0,iteration1*pixelDistance,iteration2*pixelDistance)));
 
                         scene.traceRay(ray, null);
-                        Vector l = scene.whittedRayTrace(ray,0);
 
-                        //Vector l = scene.estimateRadiance(ray);
+                        Vector l = scene.estimateRadiance(ray);
 
                         if (ray.getFirstPhoton() != null) {
                             Object object = scene.getObject(ray.getFirstPhoton().getI());
