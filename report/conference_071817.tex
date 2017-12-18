@@ -1,15 +1,15 @@
-\documentclass[a4paper,12pt]{IEEEtran}
-\IEEEoverridecommandlockouts
+\documentclass[a4paper,12pt,oneside,final]{report}
+
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 \usepackage{cite}
-\usepackage[document]{ragged2e}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{algorithmic}
 \usepackage{graphicx}
-\usepackage{textcomp}
+\usepackage[utf8]{inputenc}
+%\usepackage{textcomp}
 \usepackage{amsmath}
-\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
-    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
 \begin{document}
 
 \title{Monte Carlo Raytracing}
@@ -17,29 +17,38 @@
 \author{Lukas Haack and Tobias Pettersson}
 
 \maketitle
+ \begin{abstract}
+ This report presents a project where images were rendered with raytracing.\\ A hexagonal room was created and spherical objects were added. By simulating how rays of light were reflected and refracted an almost photorealistic result was achieved. This method is called raytracing as the rays from the light source are traced through the environment and the rays that hit the camera make up the image. This report presents the equations needed for a photorealistic result and the code used to solve these equations. 
+ \end{abstract}
 
 
 
 \section{Introduction}
-The first algorithm that handled ray tracing was implemented by Arthur Appel in 1968 \cite{Arthur Appel}. This method casts rays from each pixel in the camera/eye screen and exchanging each pixel with the first pixel each ray intersects with \cite{Basic Raytracing}. 
+
 
 Raytracing is a useful tool in computer graphics. By calculating and simulating how rays of light interfere and interact gives a realistic result. When a ray is shot through the scene four things can happen to it absorption, reflection, refraction or fluorescence.
 If the ray is absorbed it hits the surface and no further calculations are needed. If the ray is reflected it's mirrored in the surfaces normal and continues to be calculated. If the ray is refracted on a transparent surface the ray changes direction on impact with the surface and continues to be calculated. If the ray encounters fluorescence it is absorbed by an object with chemical properties that in turn starts emitting light.
 
 The important part of the calculation is to determine which rays that fall upon the camera as seen in figure 1. 
+\begin{center}
 \begin{figure}[h!]
+\begin{center}
 \includegraphics[width=0.5\textwidth]{6a0120a85dcdae970b0128777032c4970c-pi.png}
+\end{center}
 \caption{The basics of raytracing}
 \end{figure}
+\end{center}
 Transparent object such as glass or a water surface can't be shown as an object with a texture since they have no colour. 
 These objects visibility is determined by how light reflects and refracts the objects. By using raytracing these objects can be created with a realistic result.
 
-%\begin{figure}[h!]
-%\includegraphics[width=0.5\textwidth]{Glasses_800_edit.png}
-%\caption{An image rendered with raytracing}
-%\end{figure}
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{Glasses_800_edit.png}
+\end{center}
+\caption{An image rendered with raytracing}
+\end{figure}
 
-Raytracing calculations can take a long time to calculate and thus they're only suitable for creating single images and not for continuously rendered video games. 
+Raytracing calculations can take a long time and thus they're only suitable for creating single images and not for continuously rendered video games. 
 \\
 This report covers the implementation and result of a Monte Carlo ray tracer that can handle transparent objects, Oren-Nayar reflection using photon mapping.
 \\
@@ -50,16 +59,21 @@ The method integrates over all the illuminance that intersects on a certain poin
 
 Transparent objects both reflect and refract rays and new rays need to be calculated as seen in figure 3.
 \begin{figure}[h!]
+\begin{center}
 \includegraphics[width=0.5\textwidth]{transparent-yta.png}
+\end{center}
 \caption{A transparent surface}
 \end{figure}
 
 Oren-Nayar reflection is built upon Lambertian reflection by dividing the surface into V-shaped microfacets that in turn are Lambertian reflectors. This method works for diffuse surfaces to make a diffuse reflection. The difference between Oren-Nayar reflection and Lambertian reflection is seen in figure 4.
 \begin{figure}[h!]
+\begin{center}
 \includegraphics[width=0.5\textwidth]{600px-Oren-nayar-vase2.jpg}
+\end{center}
 \caption{Lambertian and Oren-Nayar reflection}
 \end{figure}
 \\
+Photon-mapping 
 \section{Background}
 
 The first algorithm that handled ray tracing was implemented by Arthur Appel in 1968 \cite{Arthur Appel}. This method casts rays from each pixel in the camera/eye screen and exchanging each pixel with the first pixel each ray intersects with \cite{Basic Raytracing}. 
@@ -84,57 +98,115 @@ The starting point of the ray is its light source, the ending point is calculate
 The radiance is the flux per projected area per unit solid angle d$\omega$. The physical unit for radiance is Watts/Steradian/m$^2$.\\ 
 
 
-The rendering equation is seen in eq. 1. 
+The rendering equation is seen in equation 1. 
+\begin{center}
 \begin{equation} \label{eq:solve}
-$$L(x$\leftarrow$ $\omega$)= Le(x$\leftarrow$ $\omega$)+
-\\ $\int_{\omega 1}$ f*(x1, -$\omega$, $\omega$1)
-L(x1$\leftarrow$ $\omega$1)d$\omega$1
-$$
+\includegraphics[width=0.5\textwidth]{rendering_equation1.png}
 \end{equation}
-
+\end{center}
 This equation takes three different radiances into consideration:\\
 The radiance from the $\omega$ direction that falls on to x.\\
 The radiance from the $\omega$ direction that falls on to x that is emitted from a light source.\\
 And the radiance that comes from the direction $\omega$1 on to x1.\\
+Each surface in the 3D-environment has a bidirectional reflectance distribution function.
+A bidirectional reflectance distribution function (abbreviated "BRDF") defines how light is reflected using four variables. The four variables used for each point are the incoming ray, the outgoing ray, the azimuth and the inclination. \\
 
+Monte-Carlo raytracing isn't optimal when there are caustic reflections in the scene. A two-pass method and photon mapping are options to improve the accuracy. 
+\\In the first pass of the two-pass method radiance from the environments light source is emitted on a surface. The radiance is proportional to the flux of a ray. Photons are defined the flux of all photons summed equals the flux of the light source.
+If a ray hits another object that's not the wall of the scene the program continues to follow it. Each intersection creates a shadow photon and is stored in the photon map. Shadow photons doesn't need direction or flux and are separated from other photons with a tag.
+Photons that hit transparent object will create caustic photons and are then reflected or refracted. 
+\\In the second pass the computation of the direct light is replaced with shadow rays. This calculation is based on the photon map and uses equation 2.
+\begin{center}
+\begin{equation} \label{eq:solve}
+\includegraphics[width=0.5\textwidth]{Direct_light_computation.png}
+\end{equation}
+\end{center}
+The integral for the direct light contribution is presented in equation 3.
+\begin{center}
+\begin{equation} \label{eq:solve}
+\includegraphics[width=0.5\textwidth]{Direct_light_contribution.png}
+\end{equation}
+\end{center}
+The integral is simplified to the sum of the photons multiplied with the BRDF-values for the angles. To reduce the number of photons the reflection is evaluated in a sphere with the radius \textit{r} and \textit{M} number of photons. The flux information in the photons are closest to the point where the direct lighting is evaluated \textit{x} is used. The Direct lighting contribution is computed in equation 4.
+\begin{center}
+\begin{equation} \label{eq:solve}
+\includegraphics[width=0.5\textwidth]{DLC-sum.png}
+\end{equation}
+\end{center}
 
+The renderer uses a probability distribution. The integral of the renderer equation in equation 5 should be evaluated with a Monte Carlo method. 
+\begin{center}
+\begin{equation} \label{eq:solve}
+\includegraphics[width=0.5\textwidth]{rendering_equation.png}
+\end{equation}
+\end{center}
+The distribution in \textit{L} is not known from the start and can't be used as a probability distribution function. 
+The BRDF won't give an invertible Cumulative Distribution Function.
+Hence should the remaining term of integral be used for Lambertian and Oren-Nayar reflectors.
+\\
+A Lambertian reflector after the use of a Probability Distribution Function is presented in equation 6.
+\begin{center}
+\begin{equation} \label{eq:solve}
+\includegraphics[width=0.5\textwidth]{lambertian_reflector.png}
+\end{equation}
+\end{center}
+Equation 7 is used to compute the importance of the consecutive rays.
+\begin{center}
+\begin{equation} \label{eq:solve}
+\includegraphics[width=0.5\textwidth]{calculate_importance.png}
+\end{equation}
+\end{center}
+
+The renderer needs a ray termination function to terminate rays that reach non-reflecting and non-transparent surfaces. 
 \section{Result}
-
 The first object of the project was to create a hexagonal room with different coloured walls. In this room two cameras were installed to view the room. 
 \begin{figure}[h!]
+\begin{center}
 \includegraphics[width=0.5\textwidth]{22497372_1485084498240818_1786426790_n.jpg}
+\end{center}
 \caption{The room viewed from camera 2}
 \end{figure}
 
 \begin{figure}[h!]
+\begin{center}
 \includegraphics[width=0.5\textwidth]{22537892_1485092411573360_1697629534_n.jpg}
+\end{center}
 \caption{The room viewed from camera 1}
 \end{figure}
 Then spherical objects were added in the room as seen in figure 5. 
 
 \begin{figure}[h!]
+\begin{center}
 \includegraphics[width=0.5\textwidth]{22551524_1487779094638025_1930937316_n.jpg}
+\end{center}
 \caption{The room with objects}
 \end{figure}
 
 The room looks like a two-dimensional projection without a sense of depth by adding a light source the room as seen in figure 6. Now the room looks more realistic and it looks three-dimensional. 
 
 \begin{figure}[h!]
+\begin{center}
 \includegraphics[width=0.5\textwidth]{22773688_1493207930761808_143008103_n.jpg}
+\end{center}
 \caption{The room with light}
 \end{figure}
 
 Lights with different colours that interfere and blend with each other according to RGB-blending was added in figure 7.
 \begin{figure}[h!]
+\begin{center}
 \includegraphics[width=0.5\textwidth]{22810020_1493352000747401_667574874_n.jpg}
+\end{center}
 \caption{Different light colours}
 \end{figure}
 
 A transparent glass sphere is added in figure 8. This shows how the light interacts, reflects and refracts on a transparent surface to define a nonopaque object. The rendering of this image is time consuming and thus the image quality is lowered. 
 \begin{figure}[h!]
+\begin{center}
 \includegraphics[width=0.5\textwidth]{22835498_1496512567098011_511434086_n.jpg}
+\end{center}
 \caption{Added glass sphere}
 \end{figure}
+
 
 \section{Discussion}
 The method is very time consuming and not suitable for real time rendering. The result is very satisfactory when used for separate images. \\
@@ -142,6 +214,14 @@ The photorealism of the lightning in the method doesn't match with the simple 3D
 \\
 A global photon map is used in the implementation but it doesn't work as well as desired with the Monte Carlo raytracer and there aren't any caustic reflections in the implementation.
 \begin{thebibliography}{00}
+\bibitem{Monte Carlo Method}
+\emph{Monte Carlo Method}\newline
+$https://en.wikipedia.org/wiki/Monte_Carlo_method$
+
+\bibitem{Path tracing}
+\emph{Path tracing}\newline
+$https://en.wikipedia.org/wiki/Path_tracing$
+
 \bibitem{Arthur Appel}
 \emph{Arthur Appel}\newline
 https://www.doc.ic.ac.uk/~dfg/graphics/graphics2009/GraphicsLecture10.pdf
@@ -150,13 +230,7 @@ https://www.doc.ic.ac.uk/~dfg/graphics/graphics2009/GraphicsLecture10.pdf
 \emph{Basic Raytracing}\newline
 http://www.cs.cornell.edu/courses/cs4620/2013fa/lectures/22mcrt.pdf
 
-\bibitem{Monte Carlo Method}
-\emph{Monte Carlo Method}\newline
-$https://en.wikipedia.org/wiki/Monte_Carlo_method$
 
-\bibitem{Path tracing}
-\emph{Path tracing}\newline
-$https://en.wikipedia.org/wiki/Path_tracing$
 
 \end{thebibliography}
 
